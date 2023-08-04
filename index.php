@@ -14,6 +14,8 @@
     if ($status == 'pass') {
       $resultDB = add_message($message);
       echo "Status of saving to database: {$resultDB}<br>";
+    } else {
+      echo "Your data is: {$status}";
     }
   }
 
