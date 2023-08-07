@@ -1,7 +1,0 @@
-
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-
-  # Blokir akses ke file PHP dan alihkan ke halaman "blokir.php"
-  RewriteRule ^(.*)$ "../notfound.html" [L]
-  </IfModule>

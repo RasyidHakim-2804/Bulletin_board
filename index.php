@@ -1,24 +1,27 @@
 <?php
-  include('ConfigFile/function.php');
+  include('ConfigFile/process.php');
 
-  if (isset($_GET['lengthStatus']) && isset($_GET['length'])) {
+  if (isset($_POST['submit'])) {
 
-    $lengthStatus = urldecode($_GET['lengthStatus']);
-    $length       = urldecode($_GET['length']);
+    $result = proses($_POST['message_data']);
 
-    echo "Your data is: {$lengthStatus} <br>";
-    echo "Length of your data: {$length} <br>";
-    echo "Please try again";
+    if ($result['lengthStatus'] != 'pass') {
 
+      echo "Your data is: {$result['lengthStatus']} <br>";
+      echo "Length of your data: {$result['length']} <br>";
+      echo "Please try again";
+  
+    }
+
+    if ($result['lengthStatus'] == 'pass') {
+
+      echo "Your data is {$result['statusDB']} to store in Database <br>";
+
+    }
+
+    
   }
 
-  if (isset($_GET['result']) && isset($_GET['length'])) {
-    $statusDB = urldecode($_GET['result']);
-    $length   = urldecode($_GET['length']);
-
-    echo "Your data is '{$statusDB}' to store in Database <br>";
-    echo "Length of your data: {$length} <br>";
-  }
 
   $table_message = query("SELECT * FROM message");
   $data = assoc($table_message);
@@ -35,7 +38,7 @@
 </head>
 <body>
   <div>
-    <form action="process.php" method="post">
+    <form action="" method="post">
       <h4>Your message must be 10 to 200 characters long</h4>
       <h4>Spaces at the beginning and at the end of a sentence are not counted</h4>
       <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />
