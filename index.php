@@ -1,30 +1,28 @@
 <?php
-  include('ConfigFile/process.php');
+  //include('ConfigFile/functionMessage.php');
+  include('Message.php');
 
   if (isset($_POST['submit'])) {
 
-    $result = proses($_POST['message_data']);
+    $message = new Message($_POST['message_data']);
 
-    if ($result['lengthStatus'] != 'pass') {
+    if ($message->statusLength !== 'pass') {
 
-      echo "Your data is: {$result['lengthStatus']} <br>";
-      echo "Length of your data: {$result['length']} <br>";
+      echo "Your data is: {$message->statusLength} <br>";
+      echo "Length of your data: {$message->length} <br>";
       echo "Please try again";
   
     }
 
-    if ($result['lengthStatus'] == 'pass') {
+    if ($message->statusLength === 'pass') {
 
-      echo "Your data is {$result['statusDB']} to store in Database <br>";
+      echo "Your data is {$message->statusDB} to store in Database <br>";
 
     }
 
-    
   }
 
-
-  $table_message = query("SELECT * FROM message");
-  $data = assoc($table_message);
+  $data = $message->show_message();
   
 
 ?>
@@ -48,13 +46,13 @@
   <hr><br><br>
   <div>
     <?php
-    $reverseData = array_reverse($data);
+    //$reverseData = array_reverse($data);
 
-    foreach($reverseData as $data){
-      $time = strtotime($data['time']);
+    foreach($data as $data){
+      $time = $data['created_on'];
       
       //echo strlen($data['message']);
-      echo "<h3>" . htmlspecialchars($data['message_data']) . "</h3>";
+      echo "<h3>" . $data['message_data'] . "</h3>";
       echo "<h5>Created on:". ' ' . date("Y-m-d  h:i:sa", $time) . "</h5><hr>";
     }
     ?>
