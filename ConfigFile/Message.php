@@ -28,9 +28,9 @@ class Message
     $result = query($query);
   
     //mengembalikan response bila gagal
-    if ($result) return 'success'; 
+    if (!$result) return 'fail'; 
     
-    return 'fail';
+    return 'success';
     
   }
   
@@ -56,7 +56,7 @@ class Message
   }
 
 //menampilkan data
-function show_message() {
+public static function show_message() {
 
   $table  = query("SELECT * FROM message");
   $row    = assoc($table);

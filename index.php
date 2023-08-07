@@ -1,10 +1,11 @@
 <?php
   //include('ConfigFile/functionMessage.php');
-  include('Message.php');
+  include('ConfigFile/Message.php');
 
   if (isset($_POST['submit'])) {
 
     $message = new Message($_POST['message_data']);
+    $message->process();
 
     if ($message->statusLength !== 'pass') {
 
@@ -16,13 +17,14 @@
 
     if ($message->statusLength === 'pass') {
 
+
       echo "Your data is {$message->statusDB} to store in Database <br>";
 
     }
 
   }
 
-  $data = $message->show_message();
+  $data = Message::show_message();
   
 
 ?>
