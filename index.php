@@ -17,16 +17,14 @@
 
     if ($message->statusLength === 'pass') {
 
-
       echo "Your data is {$message->statusDB} to store in Database <br>";
 
     }
 
   }
 
-  $data = Message::show_message();
+  $data = Message::get_message();
   
-
 ?>
 
 <!DOCTYPE html>

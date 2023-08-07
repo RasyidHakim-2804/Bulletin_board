@@ -56,7 +56,7 @@ class Message
   }
 
 //menampilkan data
-public static function show_message() {
+public static function get_message() {
 
   $table  = query("SELECT * FROM message");
   $row    = assoc($table);
