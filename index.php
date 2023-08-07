@@ -5,7 +5,6 @@
   if (isset($_POST['submit'])) {
 
     $message = new Message($_POST['message_data']);
-    $message->process();
 
     if ($message->statusLength !== 'pass') {
 
@@ -16,6 +15,8 @@
     }
 
     if ($message->statusLength === 'pass') {
+
+      $message->process();
 
       echo "Your data is {$message->statusDB} to store in Database <br>";
 
