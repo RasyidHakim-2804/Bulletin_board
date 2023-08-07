@@ -1,26 +1,28 @@
 <?php
   include('ConfigFile/function.php');
 
-  $resultDB = '';
+  if (isset($_GET['lengthStatus']) && isset($_GET['length'])) {
 
-  if ( isset($_POST['submit']) ) {
-    $message = clean_message($_POST['message']);
-    $lenght  = strlen($message);
-    $status  = long_validation($message, 10, 200);
-    
-    echo "Your message           : {$message}<br>";
-    echo "Lenght of your message: {$lenght}<br>";
-    
-    if ($status == 'pass') {
-      $resultDB = add_message($message);
-      echo "Status of saving to database: {$resultDB}<br>";
-    } else {
-      echo "Your data is: {$status}";
-    }
+    $lengthStatus = urldecode($_GET['lengthStatus']);
+    $length       = urldecode($_GET['length']);
+
+    echo "Your data is: {$lengthStatus} <br>";
+    echo "Length of your data: {$length} <br>";
+    echo "Please try again";
+
+  }
+
+  if (isset($_GET['result']) && isset($_GET['length'])) {
+    $statusDB = urldecode($_GET['result']);
+    $length   = urldecode($_GET['length']);
+
+    echo "Your data is '{$statusDB}' to store in Database <br>";
+    echo "Length of your data: {$length} <br>";
   }
 
   $table_message = query("SELECT * FROM message");
   $data = assoc($table_message);
+  
 
 ?>
 
@@ -33,11 +35,11 @@
 </head>
 <body>
   <div>
-    <form action="" method="post">
+    <form action="process.php" method="post">
       <h4>Your message must be 10 to 200 characters long</h4>
       <h4>Spaces at the beginning and at the end of a sentence are not counted</h4>
-      <textarea name="message" id="message" cols="70" rows="3" style="resize:none"></textarea><br />
-      <input type="submit" name="submit" value="Sumbit">
+      <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />
+      <input type="submit" name="submit" value="Submit">
     </form>
   </div>
   <hr><br><br>
@@ -49,7 +51,7 @@
       $time = strtotime($data['time']);
       
       //echo strlen($data['message']);
-      echo "<h3>" . htmlspecialchars($data['message']) . "</h3>";
+      echo "<h3>" . htmlspecialchars($data['message_data']) . "</h3>";
       echo "<h5>Created on:". ' ' . date("Y-m-d  h:i:sa", $time) . "</h5><hr>";
     }
     ?>

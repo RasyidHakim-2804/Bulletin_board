@@ -3,5 +3,5 @@
   RewriteEngine On
 
   # Blokir akses ke file PHP dan alihkan ke halaman "blokir.php"
-  RewriteRule ^(.*)$ index.php [L]
+  RewriteRule ^(.*)$ "../notfound.html" [L]
   </IfModule>

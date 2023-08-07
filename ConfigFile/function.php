@@ -28,59 +28,37 @@ function assoc($table)
 
 
 //untuk membersihkan kalimat dari lebih satu spasi
-function clean_message($message)
+function clean_message($message, $delimiter = ' ')
 {
-  $cleanMessage = preg_replace("/\s+/", ' ', trim($message));
+  $cleanMessage = preg_replace("/\s++/", $delimiter, trim($message));
+  
   return $cleanMessage;
 }
 
 //memeriksa panjang kalimat
-function long_validation($message, $min, $max)
+function length_validation($message, $max, $min = 0)
 {
   $characterLength = strlen($message);
-  if ($characterLength == 0) {
-    return 'empty';
-  } elseif ($characterLength < $min) {
-    return 'to short';
-  } elseif ($characterLength > $max) {
-    return 'to long';
-  }
-
+  if ($characterLength == 0) return 'empty';
+  
+  if ($characterLength < $min) return 'to short';
+  
+  if ($characterLength > $max) return 'to long';
+  
   return 'pass';
 }
 
 
 //menambah data pesan ke MYSQL
-function add_message($message)
+function add_data($table, $collumn, $data)
 {
-  $query = "INSERT INTO message (message) VALUE ('$message')";
+  $query = "INSERT INTO $table ($collumn) VALUE ('$data')";
   
   $result = query($query);
 
   //mengembalikan response bila gagal
-  if ($result) {
-    return 'success';
-  } else {
-    return 'fail';
-  }
+  if ($result) return 'success'; 
+  
+  return 'fail';
+  
 }
-
-
-// //menampilkan alert sesuai respon
-// function alert($status, $message, $resultDB = '')
-// {
-//   if ($status == 'pass') {
-//     echo "<script type ='text/JavaScript'>";  
-//     echo "alert('Data {$resultDB} to add to database,"
-//           . ' ' . 'Your data length:' 
-//           . strlen($message) . "')";  
-//     echo "</script>";
-//   } else {
-//     echo "<script type ='text/JavaScript'>";  
-//       echo "alert('Data does not match," . ' '
-//            . "Because your data is {$status}," 
-//            . ' ' . "the length of your data:"
-//            . ' ' . strlen($message) . "')"; 
-//       echo "</script>";
-//   }
-// }
