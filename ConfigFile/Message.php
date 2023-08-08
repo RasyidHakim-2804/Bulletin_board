@@ -11,13 +11,17 @@ class Message
   public $statusLength;
   public $statusDB;
   public $length;
+  public $response;
 
   public function __construct(string $message)
   {
+
     $this->message      = $message;
     $this->fixMessage   = clean_message($this->message);
     $this->length       = strlen($this->fixMessage);
     $this->statusLength = length_validation($this->fixMessage, 200, 10);
+    $this->response     = $this->process();
+
   }
 
 
@@ -36,47 +40,45 @@ class Message
   
 
   //method prosses
-  public function process()
+  private function process()
   {
 
     if ($this->statusLength == 'pass') {
     
       $this->statusDB = $this->add_message($this->fixMessage);
+
+      return TRUE;
     
     }
     
-    $result = [
-      'lengthStatus' => $this->statusLength, 
-      'length'       => $this->length, 
-      'statusDB'     => $this->statusDB,
-    ];
   
-    return $result;
+    return FALSE;
   
   }
 
-//menampilkan data
-public static function get_message() {
+  //menampilkan data
+  public static function get_message() 
+  {
 
-  $table  = query("SELECT * FROM message");
-  $row    = assoc($table);
-  $result = [];
+    $table  = query("SELECT * FROM message");
+    $row    = assoc($table);
+    $result = [];
 
-  //membersihkan data untuk menghilangkan html
-  foreach ($row as $data) {
+    //membersihkan data untuk menghilangkan html
+    foreach ($row as $data) {
 
-    $time = strtotime($data['time']);
-    $desc = htmlspecialchars($data['message_data']);
+      $time = strtotime($data['time']);
+      $desc = htmlspecialchars($data['message_data']);
 
-    $result[] = [
-      'created_on'   => $time,
-      'message_data' => $desc, 
-    ];
+      $result[] = [
+        'created_on'   => $time,
+        'message_data' => $desc, 
+      ];
+    }
+
+    //mengurutkan dari yang paling baru
+    return array_reverse($result);
+    
   }
-
-  //mengurutkan dari yang paling baru
-  return array_reverse($result);
-  
-}
 
 }
