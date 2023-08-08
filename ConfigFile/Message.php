@@ -51,7 +51,6 @@ class Message
     
     }
     
-  
     return FALSE;
   
   }
