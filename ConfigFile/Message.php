@@ -7,7 +7,6 @@ class Message
 {
 
   public $message;
-  public $fixMessage;
   public $statusLength;
   public $statusDB;
   public $length;
@@ -16,10 +15,9 @@ class Message
   public function __construct(string $message)
   {
 
-    $this->message      = $message;
-    $this->fixMessage   = clean_message($this->message);
-    $this->length       = strlen($this->fixMessage);
-    $this->statusLength = length_validation($this->fixMessage, 200, 10);
+    $this->message      = clean_message($message);
+    $this->length       = strlen($this->message);
+    $this->statusLength = length_validation($this->message, 200, 10);
     $this->response     = $this->process();
 
   }
@@ -45,7 +43,7 @@ class Message
 
     if ($this->statusLength == 'pass') {
     
-      $this->statusDB = $this->add_message($this->fixMessage);
+      $this->statusDB = $this->add_message($this->message);
 
       return TRUE;
     
