@@ -12,7 +12,7 @@ class Message
   public $statusDB;
   public $length;
 
-  public function __construct($message)
+  public function __construct(string $message)
   {
     $this->message      = $message;
     $this->fixMessage   = clean_message($this->message);
