@@ -1,23 +1,24 @@
 <?php
 
 //untuk membersihkan kalimat dari lebih satu spasi
-function clean_message($input, $delimiter = ' ')
+function string_cleaner($input, $delimiter = ' ')
 {
-  $cleanMessage = preg_replace("/\s++/", $delimiter, trim($input));
+  $cleanString = preg_replace("/\s++/", $delimiter, trim($input));
   
-  return $cleanMessage;
+  return $cleanString;
 }
 
 
 //memeriksa panjang kalimat
-function length_validation($input, $max, $min = 0)
+function length_validation($input, $min = 0, $max = false)
 {
   $characterLength = strlen($input);
-  if ($characterLength == 0) return 'empty';
+
+  if ($characterLength === 0) return 'empty';
   
   if ($characterLength < $min) return 'to short';
   
-  if ($characterLength > $max) return 'to long';
+  if ($max !== false && $characterLength > $max) return 'to long';
   
   return 'pass';
 }

@@ -1,30 +1,29 @@
 <?php
   //include('ConfigFile/functionMessage.php');
-  include('ConfigFile/Message.php');
+  include('ConfigFile/messageFunction.php');
+
 
   if (isset($_POST['submit'])) {
 
-    $message  = new Message($_POST['message_data']);
-    $response = $message->response;
+    $response  = process_add_message($_POST['message_data']);
 
-    if ($response === FALSE) {
+    if ($response['response'] === FALSE) {
 
-      echo "Your data is: {$message->statusLength} <br>";
-      echo "Length of your data: {$message->length} <br>";
+      echo "Your data is: {$response['statusLength']} <br>";
+      echo "Length of your data: {$response['length']} <br>";
       echo "Please try again";
   
     }
 
-    if ($response === TRUE) {
+    if ($response['response'] === TRUE) {
 
-      echo "Your data is {$message->statusDB} to store in Database <br>";
+      echo "Your data is {$response['statusQuery']} to store in Database <br>";
 
     }
 
   }
 
-  $data = Message::get_message();
-  
+  $data = get_message();
 ?>
 
 <!DOCTYPE html>
