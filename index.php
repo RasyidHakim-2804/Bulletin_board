@@ -6,7 +6,7 @@
 
   if (isset($_POST['submit'])) {
 
-    $response  = process_add_message($_POST['message_data']);
+    $response  = process_message('add',$_POST['message_data']);
 
     if ($response['response'] === FALSE) {
 

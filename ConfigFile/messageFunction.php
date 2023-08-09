@@ -45,27 +45,33 @@ function add_message($input)
 }
 
 //function validasi pesan dan menambah pesan
-function process_add_message($message)
+function process_message($action, $message)
 {
 
   $fixMessage   = string_cleaner($message);
   $statusLength = length_validation($fixMessage,10,200);
 
-  if ($statusLength == 'pass') {
-    
-    $resultQuery = add_message($fixMessage);
-
-    return [ 
-      'response'    => TRUE, 
-      'statusQuery' => $resultQuery ];
-    
-  }
+  if ($statusLength !== 'pass') {
     
     return [ 
       'response'     => FALSE,
       'statusLength' => $statusLength,
       'length'       => strlen($fixMessage),
     ];
-  
+    
+  }
+    
+  if ($action === 'add') {
+
+    $resultQuery = add_message($fixMessage);
+
+    return [ 
+      'response'    => TRUE, 
+      'statusQuery' => $resultQuery,
+    ];
+
+  }  
+
+    
 }
 
