@@ -1,6 +1,7 @@
 <?php
   //include('ConfigFile/functionMessage.php');
   include('ConfigFile/messageFunction.php');
+  //ok
 
 
   if (isset($_POST['submit'])) {
