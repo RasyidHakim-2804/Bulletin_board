@@ -23,7 +23,6 @@
   }
 
   $data = get_messages();
-  mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
