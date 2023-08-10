@@ -1,7 +1,7 @@
 <?php
 
 //untuk membersihkan kalimat dari lebih satu spasi
-function string_cleaner($input, $delimiter = ' ')
+function string_cleaner(string $input,string $delimiter = ' '): string
 {
   $cleanString = preg_replace("/\s++/", $delimiter, trim($input));
   
@@ -10,7 +10,7 @@ function string_cleaner($input, $delimiter = ' ')
 
 
 //memeriksa panjang kalimat
-function length_validation($input, $min = 0, $max = false)
+function length_validation(string $input,int $min = 0,int $max = 0): string
 {
   $characterLength = strlen($input);
 
@@ -18,7 +18,7 @@ function length_validation($input, $min = 0, $max = false)
   
   if ($characterLength < $min) return 'to short';
   
-  if ( ($max !== false) && ($characterLength > $max) ) return 'to long';
+  if ( ($max !== 0) && ($characterLength > $max) ) return 'to long';
   
   return 'pass';
 }

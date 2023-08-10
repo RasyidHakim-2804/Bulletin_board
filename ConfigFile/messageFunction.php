@@ -6,7 +6,7 @@ include('validation.php');
 
 
   //menampilkan data
-function get_messages() 
+function get_messages(): array 
 {
 
   $table  = query("SELECT * FROM message");
@@ -31,7 +31,7 @@ function get_messages()
 }
 
 //menambah pesan
-function add_message($message)
+function add_message(string $message): array
 {
 
   $fixMessage   = string_cleaner($message);
