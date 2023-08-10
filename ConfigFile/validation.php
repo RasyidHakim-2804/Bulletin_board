@@ -18,7 +18,7 @@ function length_validation($input, $min = 0, $max = false)
   
   if ($characterLength < $min) return 'to short';
   
-  if ($max !== false && $characterLength > $max) return 'to long';
+  if ( ($max !== false) && ($characterLength > $max) ) return 'to long';
   
   return 'pass';
 }

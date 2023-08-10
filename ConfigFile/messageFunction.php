@@ -6,7 +6,7 @@ include('validation.php');
 
 
   //menampilkan data
-function get_all_messages() 
+function get_messages() 
 {
 
   $table  = query("SELECT * FROM message");
@@ -31,21 +31,7 @@ function get_all_messages()
 }
 
 //menambah pesan
-function add_message($input)
-{
-  $query = "INSERT INTO message ( message_data ) VALUE ('$input')";
-    
-  $result = query($query);
-  
-  //mengembalikan response bila gagal
-  if (!$result) return 'fail'; 
-    
-  return 'success';
-    
-}
-
-//function validasi pesan
-function process_message($action, $message = '')
+function add_message($message)
 {
 
   $fixMessage   = string_cleaner($message);
@@ -54,24 +40,27 @@ function process_message($action, $message = '')
   if ($statusLength !== 'pass') {
     
     return [ 
-      'response'     => FALSE,
+      'status'       => FALSE,
       'statusLength' => $statusLength,
       'length'       => strlen($fixMessage),
     ];
     
   }
+
+  $value  = escape_string($fixMessage);
+  $query  = "INSERT INTO message ( message_data ) VALUE ('$value')";  
+  $result = query($query);
+  
+  //mengembalikan response bila gagal
+  if (!$result) $statusQuery = 'fail'; 
     
-  if ($action === 'add') {
+  if ($result) $statusQuery = 'success';
 
-    $resultQuery = add_message($fixMessage);
-
-    return [ 
-      'response'    => TRUE, 
-      'statusQuery' => $resultQuery,
-    ];
-
-  }  
-
+  return [ 
+    'status'      => TRUE, 
+    'statusQuery' => $statusQuery,
+  ];
     
 }
+
 

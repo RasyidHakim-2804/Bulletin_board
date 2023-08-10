@@ -4,25 +4,26 @@
 
   if (isset($_POST['submit'])) {
 
-    $response  = process_message('add',$_POST['message_data']);
+    $status  = add_message($_POST['message_data']);
 
-    if ($response['response'] === FALSE) {
+    if ($status['status'] === FALSE) {
 
-      echo "Your data is: {$response['statusLength']} <br>";
-      echo "Length of your data: {$response['length']} <br>";
+      echo "Your data is: {$status['statusLength']} <br>";
+      echo "Length of your data: {$status['length']} <br>";
       echo "Please try again";
   
     }
 
-    if ($response['response'] === TRUE) {
+    if ($status['status'] === TRUE) {
 
-      echo "Your data is {$response['statusQuery']} to store in Database <br>";
+      echo "Your data is {$status['statusQuery']} to store in Database <br>";
 
     }
 
   }
 
-  $data = get_all_messages();
+  $data = get_messages();
+  mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +31,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Bulletin Board</title>
 </head>
 <body>
   <div>
@@ -50,8 +51,8 @@
       $time = $data['created_on'];
       
       //echo strlen($data['message']);
-      echo "<h3>" . $data['message_data'] . "</h3>";
-      echo "<h5>Created on:". ' ' . date("Y-m-d  h:i:sa", $time) . "</h5><hr>";
+      echo  '<h3>' . $data['message_data'] . '</h3>';
+      echo "<p>Created on:". ' ' . date("Y-m-d  h:i:sa", $time) . "</p><hr>";
     }
     ?>
   </div>
