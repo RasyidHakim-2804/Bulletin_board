@@ -1,5 +1,5 @@
 <?php
-  //include('ConfigFile/functionMessage.php');
+
   include_once('ConfigFile/Message.php');
   include_once('ConfigFile/MyConnection.php');
 
