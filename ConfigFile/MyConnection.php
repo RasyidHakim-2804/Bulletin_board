@@ -6,8 +6,7 @@ class MyConnection extends mysqli
   private const USER     = "root";
   private const PASSWORD = "rootRoot";
   private const DATABASE = "bulletin_board";
-  
-  public $connection;
+  private $connection;
 
   public function __construct()
   {
