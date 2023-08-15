@@ -17,6 +17,7 @@ class Message
   
   }
 
+
   //menampilkan data
   public function get()
   {
@@ -68,7 +69,7 @@ class Message
     //mengembalikan response bila gagal
     if (!$result) $statusQuery = 'fail'; 
       
-    if ($result) $statusQuery = 'success';
+    if ($result) $statusQuery  = 'success';
 
     return [ 
       'status'      => TRUE, 

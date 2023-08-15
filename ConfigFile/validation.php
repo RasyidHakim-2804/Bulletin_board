@@ -10,8 +10,6 @@ class Validation
     return $cleanString;
   }
 
-
-
   
   //memeriksa panjang kalimat
   public function validateLength( string $input, int $min = 0, int $max = 0): string
