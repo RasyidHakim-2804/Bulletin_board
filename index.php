@@ -4,7 +4,7 @@
   include_once('ConfigFile/MyConnection.php');
 
   $myConnection = new MyConnection();
-  $message = new Message($myConnection);
+  $message      = new Message($myConnection);
 
   if (isset($_POST['submit'])) {
 
