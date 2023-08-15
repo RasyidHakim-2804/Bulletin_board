@@ -1,10 +1,14 @@
 <?php
   //include('ConfigFile/functionMessage.php');
-  include('ConfigFile/messageFunction.php');
+  include_once('ConfigFile/Message.php');
+  include_once('ConfigFile/MyConnection.php');
+
+  $myConnection = new MyConnection();
+  $message = new Message($myConnection);
 
   if (isset($_POST['submit'])) {
 
-    $status  = add_message($_POST['message_data']);
+    $status  = $message->post($_POST['message_data']);
 
     if ($status['status'] === FALSE) {
 
@@ -22,8 +26,8 @@
 
   }
 
-  $data = get_messages();
-  mysqli_close($conn);
+  $data = $message->get();
+  $myConnection->myClose();
 ?>
 
 <!DOCTYPE html>
