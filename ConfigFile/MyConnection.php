@@ -1,6 +1,6 @@
 <?php
 
-class MyConnection extends mysqli
+class MyConnection
 {
   private const SERVER   = "localhost";
   private const USER     = "root";
@@ -50,9 +50,7 @@ class MyConnection extends mysqli
 
   public function myEscapeString(string $input)
   {
-
     return $this->connection->real_escape_string($input);
-  
   }
 
 
