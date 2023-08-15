@@ -26,12 +26,8 @@
 
   }
 
-<<<<<<< HEAD
   $data = $message->get();
   $myConnection->myClose();
-=======
-  $data = get_messages();
->>>>>>> 20eb963c5e232ca001a8f90f26379c747a6fd5d0
 ?>
 
 <!DOCTYPE html>
