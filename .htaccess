@@ -1,4 +1,9 @@
 RewriteEngine On
 
-RewriteRule [^(index.php)] notfound.html [NC]
+RewriteRule ^(ConfigFile) notfound.html [NC]
 RewriteRule (.)*index.php$ index.php
+
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-l
+RewriteRule ^(.*)$ notfound.html

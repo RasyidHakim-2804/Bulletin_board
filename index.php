@@ -52,11 +52,10 @@
     //$reverseData = array_reverse($data);
 
     foreach($data as $data){
-      $time = $data['created_on'];
+      $time = $data['time'];
       
-      //echo strlen($data['message']);
-      echo  '<h3>' . $data['message_data'] . '</h3>';
-      echo "<p>Created on:". ' ' . date("Y-m-d  h:i:sa", $time) . "</p><hr>";
+      echo  '<h3>' . $data['body'] . '</h3>';
+      echo "<p>Created on:". ' ' . $data['time'] . "</p><hr>";
     }
     ?>
   </div>

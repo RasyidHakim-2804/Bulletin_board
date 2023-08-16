@@ -26,11 +26,11 @@ class Message
     $row    = $this->conn->myAssoc($table);
 
     //membersihkan data untuk menghilangkan html
-    array_walk($row, function ( &$data) {
+    array_walk($row, function ( &$value) {
       
-      $data = [
-        'created_on'   => strtotime($data['time']),
-        'message_data' => htmlspecialchars($data['message_data']),
+      $value = [
+        'time' => strtotime($value['time']),
+        'body' => htmlspecialchars($value['body']),
       ];
 
     });
@@ -42,7 +42,7 @@ class Message
 
   
   //menambah pesan
-  function post(string $message): array
+  public function post(string $message): array
   {
 
     $fixMessage   = $this->validation->clearString($message);
@@ -59,7 +59,7 @@ class Message
     }
 
     $value  = $this->conn->myEscapeString($fixMessage);
-    $query  = "INSERT INTO message ( message_data ) VALUE ('$value')";  
+    $query  = "INSERT INTO message ( body ) VALUE ('$value')";  
     $result = $this->conn->myQuery($query);
     
     //mengembalikan response bila gagal
