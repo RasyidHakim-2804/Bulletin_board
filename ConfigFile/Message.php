@@ -24,21 +24,20 @@ class Message
     
     $table  = $this->conn->myQuery("SELECT * FROM message");
     $row    = $this->conn->myAssoc($table);
-    $result = [];
 
     //membersihkan data untuk menghilangkan html
-    foreach ($row as $data) {
-
+    $result = array_map( function ($data) {
+      
       $time = strtotime($data['time']);
       $desc = htmlspecialchars($data['message_data']);
 
-      $result[] = [
+      return [
         'created_on'   => $time,
         'message_data' => $desc, 
         ];
-    }
 
-    //mengurutkan dari yang paling baru
+    }, $row);
+
     return array_reverse($result);
     
   }
