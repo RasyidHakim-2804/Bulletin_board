@@ -22,7 +22,7 @@ class Message
   public function get()
   {
     
-    $table  = $this->conn->myQuery("SELECT * FROM message");
+    $table  = $this->conn->myQuery("SELECT * FROM message ORDER BY id DESC");
     $row    = $this->conn->myAssoc($table);
 
     //membersihkan data untuk menghilangkan html
@@ -38,7 +38,7 @@ class Message
 
     }, $row);
 
-    return array_reverse($result);
+    return $result;
     
   }
 
