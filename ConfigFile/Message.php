@@ -26,19 +26,16 @@ class Message
     $row    = $this->conn->myAssoc($table);
 
     //membersihkan data untuk menghilangkan html
-    $result = array_map( function ($data) {
+    array_walk($row, function ( &$data) {
       
-      $time = strtotime($data['time']);
-      $desc = htmlspecialchars($data['message_data']);
+      $data = [
+        'created_on'   => strtotime($data['time']),
+        'message_data' => htmlspecialchars($data['message_data']),
+      ];
 
-      return [
-        'created_on'   => $time,
-        'message_data' => $desc, 
-        ];
+    });
 
-    }, $row);
-
-    return $result;
+    return $row;
     
   }
 
