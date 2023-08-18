@@ -1,10 +1,7 @@
 <?php
 
-  require_once "vendor/autoload.php";
-
-  use App\Config\MyConnection;
-  use App\Config\Message;
-
+  include_once('../config/MyConnection.php');
+  include_once('../config/Message.php');
 
   $myConnection = new MyConnection();
   $message      = new Message($myConnection);

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Config;
+
 class Validation
 {
   //untuk membersihkan kalimat dari lebih satu spasi

@@ -1,9 +1,11 @@
-RewriteEngine On
+RewriteEngine on
 
-RewriteRule ^(ConfigFile) notfound.html [NC]
-RewriteRule (.)*index.php$ index.php
+DirectoryIndex index.php
+
+RewriteRule (config) App/pages/notfound.php [NC]
+RewriteRule (pages) App/pages/notfound.php [NC]
 
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-l
-RewriteRule ^(.*)$ notfound.html
+RewriteRule ^(.*)$ App/pages/notfound.php/$1

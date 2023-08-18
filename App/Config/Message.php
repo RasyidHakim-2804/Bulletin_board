@@ -1,7 +1,7 @@
 <?php
 
-include_once('MyConnection.php');
-include_once('Validation.php');
+namespace App\Config;
+
 
 class Message
 {

@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Config;
+
+use \mysqli;
+
 class MyConnection
 {
   private const SERVER   = "localhost";
