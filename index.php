@@ -1,12 +1,13 @@
 <?php
-
+ var_dump($_GET);
+ echo '<br>';
   require_once "vendor/autoload.php";
 
   use App\Config\MyConnection;
   use App\Config\Message;
 
 
-  $myConnection = new MyConnection();
+  $myConnection = new MyConnection;
   $message      = new Message($myConnection);
 
   if (isset($_POST['submit'])) {

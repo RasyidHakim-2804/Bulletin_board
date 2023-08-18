@@ -8,4 +8,4 @@ RewriteRule (pages) App/pages/notfound.php [NC]
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-l
-RewriteRule ^(.*)$ App/pages/notfound.php/$1
+RewriteRule ^(.*)$ index.php?url=$1 [L]
