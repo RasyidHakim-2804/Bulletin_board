@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Config;
+namespace Config;
 
 use \mysqli;
 
@@ -16,9 +16,9 @@ class MyConnection
   {
     $this->connection = new mysqli(self::SERVER, self::USER, self::PASSWORD, self::DATABASE);
     
-    if ($this->connection->connect_errno) {
+    if ($this->connection->connect_error) {
     
-      trigger_error('Failed to connect to MySQL:' . ' ' . $this->connection->connect_error);      
+      die('Failed to connect to MySQL:' . ' ' . $this->connection->connect_error);      
     
     }
     

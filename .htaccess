@@ -2,8 +2,8 @@ RewriteEngine on
 
 DirectoryIndex index.php
 
-RewriteRule (config) App/pages/notfound.php [NC]
-RewriteRule (pages) App/pages/notfound.php [NC]
+RewriteRule (config) notfound.php [NC]
+RewriteRule (pages) notfound.php [NC]
 
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d

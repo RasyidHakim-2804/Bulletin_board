@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Config;
-
+namespace Config;
 
 class Message
 {
@@ -9,11 +8,11 @@ class Message
   private $conn;
   private $validation;
   
-  public function __construct(MyConnection $conn)
+  public function __construct()
   {
 
-    $this->conn       = $conn;
-    $this->validation = new Validation();
+    $this->conn       = new MyConnection;
+    $this->validation = new Validation;
   
   }
 
