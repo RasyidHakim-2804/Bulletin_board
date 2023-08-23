@@ -1,19 +1,17 @@
 <?php
 
-namespace Config;
+namespace App\Core;
 
 class Message
 {
 
-  private $minPaginate = 0;
-  private $maxPaginate = 10;
   private $conn;
   private $validation;
   
   public function __construct()
   {
 
-    $this->conn       = new MyConnection;
+    $this->conn       = new Database;
     $this->validation = new Validation;
   
   }

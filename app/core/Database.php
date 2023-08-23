@@ -1,10 +1,9 @@
 <?php
-
-namespace Config;
+namespace App\Core;
 
 use \mysqli;
 
-class MyConnection
+class Database
 {
   private const SERVER   = "localhost";
   private const USER     = "root";

@@ -2,18 +2,33 @@
 
 require_once "vendor/autoload.php";
 
-define('BASE_URL', '/Bulletin_board');
+use App\Core\Router;
 
-$path   = preg_replace('/\/+/', '/', $_SERVER['REQUEST_URI']);
-$path   = str_replace(BASE_URL,'',$path);
+define('DOMAIN', '/Bulletin_board');
+
+$uri   = preg_replace('/\/+/', '/', $_SERVER['REQUEST_URI']);
+$uri   = str_replace(DOMAIN,'',$uri);
 $method = $_SERVER['REQUEST_METHOD'];
 
-var_dump($method);
-echo '<br>';
-var_dump($path);
-echo '<br>';
+// var_dump(__FILE__);
+// var_dump(__DIR__);
+// var_dump($uri);
 
 
-if ($path === '/' ) {
-  require_once 'views/home.php';
-}
+//bikin router
+$router = new Router;
+
+$router->route('GET', '/', function() {
+  require_once 'app/views/home.php';
+});
+
+$router->route('POST', '/', function() {
+  require_once 'app/views/home.php';
+});
+
+$router->errorRoute( 404, function() {
+  require_once 'app/views/notfound.php';
+});
+
+$router->run($uri, $method);
+

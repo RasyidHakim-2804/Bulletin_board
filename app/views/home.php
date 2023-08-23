@@ -1,11 +1,11 @@
 <?php
 
-  use Config\MyConnection;
-  use Config\Message;
+  use App\Core\Database;
+  use App\Core\Message;
 
 
-  $myConnection = new MyConnection;
-  $message      = new Message();
+  $myConnection = new Database;
+  $message      = new Message;
 
   if (isset($_POST['submit'])) {
 
@@ -60,10 +60,10 @@
 
   
   <div>
-    <table style="width: 50%;">
+    <table style="width: 70%;">
       <tr>
         <th>ID</th>
-        <th>BODY</th>
+        <th>MESSAGE</th>
         <th>CREATED ON</th>
       </tr>
       <?php
@@ -72,7 +72,7 @@
         echo '<tr>';
         echo '<td>' . $data['id']   . '</td>';
         echo '<td>' . $data['body'] . '</td>';
-        echo '<td>' . $data['time'] . '</td>';
+        echo '<td><h4>' . date("Y-m-d  h:i:sa", $time) . '</h4></td>';
         echo '<tr>';
       }
       ?>

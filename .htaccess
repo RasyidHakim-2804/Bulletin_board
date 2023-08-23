@@ -2,7 +2,7 @@ RewriteEngine on
 
 DirectoryIndex index.php
 
-RewriteRule (config) views/notfound.php [NC]
+RewriteRule (app) app/views/notfound.php [NC]
 
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
