@@ -29,7 +29,7 @@
 
 CREATE TABLE `message` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `message_data` varchar(210) NOT NULL,
+  `body` varchar(210) NOT NULL,
   `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

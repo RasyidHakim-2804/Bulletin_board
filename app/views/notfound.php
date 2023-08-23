@@ -1,3 +1,5 @@
+<?php
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,7 @@
   <title>404</title>
 </head>
 <body>
-  <h1>404: not found</h1>
+  <h1>404: not found ❌</h1>
+  <h1>hehehe</h1>
 </body>
 </html>
