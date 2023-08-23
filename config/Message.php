@@ -5,6 +5,8 @@ namespace Config;
 class Message
 {
 
+  private $minPaginate = 0;
+  private $maxPaginate = 10;
   private $conn;
   private $validation;
   
@@ -28,6 +30,7 @@ class Message
     array_walk($row, function ( &$value) {
       
       $value = [
+        'id'   => $value['id'],
         'time' => strtotime($value['time']),
         'body' => htmlspecialchars($value['body']),
       ];
@@ -35,6 +38,11 @@ class Message
     });
 
     return $row;
+    
+  }
+
+  public function paginate()
+  {
     
   }
 
