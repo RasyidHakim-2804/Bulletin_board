@@ -39,11 +39,6 @@ class Message
     
   }
 
-  public function paginate()
-  {
-    
-  }
-
 
   
   //menambah pesan
