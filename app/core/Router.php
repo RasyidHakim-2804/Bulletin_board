@@ -1,7 +1,6 @@
 <?php
 namespace App\Core;
 
-use function App\Core\Helpers\myParseduri;
 
 class Router
 {

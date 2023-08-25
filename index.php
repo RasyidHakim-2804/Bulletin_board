@@ -25,7 +25,7 @@ $method      = $_SERVER['REQUEST_METHOD'];
 
 // var_dump(__FILE__);
 // echo '<br>';
-// var_dump(__DIR__);
+//var_dump(__DIR__);
 
 // var_dump($uri);
 // echo '<br>';
@@ -44,7 +44,9 @@ $router->route('GET','/', function(){
   return view('home', ['data' => $data]);
 });
 
-$router->route('POST', '/post', [MessageController::class, 'store']);
+$router->route('POST', '/post', 
+  [MessageController::class, 'store']
+);
 
 $router->route('GET', '/test', function() {
   return view('test', ['nama' => 'rasyid']);

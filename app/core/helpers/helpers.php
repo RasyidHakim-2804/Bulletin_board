@@ -1,14 +1,14 @@
 <?php
 namespace App\Core\Helpers;
 
-const THIS_DIR = 'C:\xampp\htdocs\Bulletin_board\app';
+const DIR_APP = __DIR__ . '\\..\\..\\..\\app';
 const DOMAIN   ='/Bulletin_board';
 
 
 
 function view(string $viewName, $data = []) {
 
-  $viewPath = THIS_DIR . "\\views\\" . $viewName . '.php';
+  $viewPath = DIR_APP . "\\views\\" . $viewName . '.php';
   
   if (file_exists($viewPath)) {
       extract($data);
