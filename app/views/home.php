@@ -1,34 +1,5 @@
 <?php
-
-  use App\Core\Database;
-  use App\Core\Message;
-
-
-  $myConnection = new Database;
-  $message      = new Message;
-
-  if (isset($_POST['submit'])) {
-
-    $status  = $message->post($_POST['message_data']);
-
-    if ($status['status'] === FALSE) {
-
-      echo "Your data is: {$status['statusLength']} <br>";
-      echo "Length of your data: {$status['length']} <br>";
-      echo "Please try again";
-  
-    }
-
-    if ($status['status'] === TRUE) {
-
-      echo "Your data is {$status['statusQuery']} to store in Database <br>";
-
-    }
-
-  }
-
-  $data = $message->get();
-  $myConnection->myClose();
+  $data;
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +20,7 @@
 </head>
 <body>
   <div>
-    <form action="" method="POST">
+    <form action="post" method="POST">
       <h4>Your message must be 10 to 200 characters long</h4>
       <h4>Spaces at the beginning and at the end of a sentence are not counted</h4>
       <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />

@@ -1,26 +1,30 @@
 <?php
 namespace App\Core;
 
+use function App\Core\Helpers\myParseduri;
+
 class Router
 {
-  private $routes        = array();
-  private $error         = array();
+
+  private $error = array();
+  private $found = false;
+  
+  private $method;
+  private $uri;
+  private $controller;
   private $responseCode;
+  
 
   //mendefinisikan route
-  public function route(string $method, string $path, callable $callback)
+  public function __construct(string $method, string $uri)
   {
-    $route = [
-      'method'   => $method,
-      'path'     => $path,
-      'callback' => $callback,
-    ];
-
-    array_push($this->routes,$route);
+    $this->uri    = $uri;
+    $this->method = $method;
   }
 
+
   //
-  public function setResponseCode(int $response_code)
+  private function setResponseCode(int $response_code)
   {
     $this->responseCode = $response_code;
     http_response_code($this->responseCode);
@@ -42,30 +46,30 @@ class Router
 
 
   //menjalankan class
-  public function run(string $uri, string $method)
+  public function route(string $method, string $uri, $controller)
   {
+    
+    if ($this->uri === $uri && $this->method === $method) {
 
-    $found = false;
+      $this->controller = $controller;
+      $this->found      = true;
 
-    foreach ($this->routes as $route) {
+    }
+  }
 
-      if ($route['method'] === $method && $route['path'] === $uri) {
+  public function __destruct()
+  {
+    if($this->found === true){
+      $this->setResponseCode(200);
+      $controller = $this->controller;
+      
+      call_user_func($controller);
 
-        $this->setResponseCode(200);
-        $found    = true;
-        $callback = $route['callback'];
-        
-        $callback();
-
-        break;
-      }
     }
 
-    if (!$found) {
-
+    if($this->found === false) {
       $this->setResponseCode(404);
-      $this->errorHandling();
-
+      return $this->errorHandling();
     }
   }
 }
