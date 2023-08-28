@@ -11,6 +11,13 @@ abstract class Model
     private const DATABASE = "bulletin_board";
     private static $connection;
 
+    
+    protected static function __invoke()
+    {
+        return self::class;
+    } 
+
+
     protected static function getConnection()
     {
         if (!self::$connection) {
@@ -23,11 +30,6 @@ abstract class Model
         
         return self::$connection;
     }
-
-    protected static function __invoke()
-    {
-        return self::class;
-    } 
 
     protected static function myQuery($query) 
     {
