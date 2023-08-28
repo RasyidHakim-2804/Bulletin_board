@@ -69,7 +69,7 @@ class MessageController
     }
 
     
-    return redirect('/', $response);
+    return redirect('/home', $response);
       
   }
 

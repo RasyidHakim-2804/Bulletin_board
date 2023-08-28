@@ -45,9 +45,19 @@ class Router
 
 
   //match route and url web
-  public static function route(string $method, string $uri, $controller)
+  public static function route(string $method, string|array $uri, $controller)
   {
+    if(is_array($uri)) {
+      foreach($uri as $path) {
+        if (self::$uri === $path && self::$method === $method) {
+
+          self::$controller = $controller;
+          self::$found      = true;
     
+        }
+      }  
+    }
+
     if (self::$uri === $uri && self::$method === $method) {
 
       self::$controller = $controller;

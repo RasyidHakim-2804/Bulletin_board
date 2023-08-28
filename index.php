@@ -18,7 +18,7 @@ $query       = $uri['query']?? null;
 $method      = $_SERVER['REQUEST_METHOD'];
 
 if(isset($_GET['response'])) {
-  $_GET['response'] = getQueryUri($_GET['response']);
+  $_GET['response'] = getQueryUri($query);
 } 
 
 //bikin router
@@ -26,7 +26,7 @@ Router::init($method, $path);
 
 
 //route
-Router::route('GET','/', function(){
+Router::route('GET', ['/', '/home'], function(){
 
   $data = MessageController::get();
   return view('home', ['row' => $data]);

@@ -65,9 +65,10 @@ function myParsedUri(string $uri) {
  */
 function getQueryUri($query) {
 
-  $encodedJson   = $query;
-  $jsonResponse  = urldecode($encodedJson);
-  $responseArray = json_decode($jsonResponse, true);
+  $decodedString = urldecode($query);
+  $data          = substr($decodedString, strpos($decodedString, "=") + 1);
+  $array         = json_decode($data, true);
 
-  return $responseArray;
+  return $array;
+
 }
