@@ -7,7 +7,7 @@ const DIR_APP = __DIR__ . "\..\..\..\app";
 const DOMAIN   ='/Bulletin_board';
 
 
-
+//function untuk menampilkan page/halaman
 function view(string $viewName, $data = []) {
 
   $viewPath = DIR_APP . "\\views\\" . $viewName . '.php';
@@ -24,6 +24,8 @@ function view(string $viewName, $data = []) {
   }
 }
 
+
+//function untuk mendirect ke router beserta mengirim response GET
 function redirect(string $to, $query = null) {
   $to = DOMAIN . $to;
 
@@ -45,6 +47,7 @@ function redirect(string $to, $query = null) {
   
 }
 
+//function untuk parsed uri
 function myParsedUri(string $uri) {
 
   $clearedUri = preg_replace('/\/++/', '/', $uri);
@@ -55,10 +58,11 @@ function myParsedUri(string $uri) {
 
 }
 
-
+/**
+ * karena response GET yang dikirim dari function redirect() diatas berupa json(string)
+ * maka kita harus mengubahnya lagi menjadi array
+ */
 function getQueryUri() {
-
-  //if(is)
 
   $encodedJson   = $_GET['response'] ?? '';
   $jsonResponse  = urldecode($encodedJson);
