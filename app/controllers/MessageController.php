@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 
-use App\Core\Database;
+use App\Models\Message;
 use App\Core\Helpers\Validation;
 
 use function App\Core\Helpers\redirect;
@@ -11,23 +11,12 @@ use function App\Core\Helpers\redirect;
 class MessageController
 {
   use Validation;
-
-  private static $conn;
-  
-  //init
-  private static function initialize()
-  {
-    self::$conn = new Database;
-  }
   
   //menampilkan data
   public static function get(): array
   {
     
-    self::initialize();
-
-    $table  = self::$conn->myQuery("SELECT * FROM message ORDER BY id DESC");
-    $row    = self::$conn->myAssoc($table);
+    $row    = Message::get();
 
     //membersihkan data untuk menghilangkan html
     array_walk($row, function ( &$value) {
@@ -50,8 +39,6 @@ class MessageController
   public static function store()
   {
 
-    self::initialize();
-
     $message      = $_POST['message_data']?? '';
     $response     = [];
     $fixMessage   = self::clearString($message);
@@ -68,10 +55,8 @@ class MessageController
     }
 
     if($statusLength === 'pass') {
-
-      $value  = self::$conn->myEscapeString($fixMessage);
-      $query  = "INSERT INTO message ( body ) VALUE ('$value')";  
-      $result = self::$conn->myQuery($query);
+  
+      $result = Message::store($fixMessage);
       
       //mengembalikan response bila gagal
       if (!$result) $statusQuery = 'fail'; 
