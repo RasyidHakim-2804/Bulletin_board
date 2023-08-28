@@ -47,12 +47,12 @@ class MessageController
 
   
   //menambah pesan
-  public static function store(): array
+  public static function store()
   {
 
     self::initialize();
 
-    $message      = $_POST['message_data'];
+    $message      = $_POST['message_data']?? '';
     $response     = [];
     $fixMessage   = self::clearString($message);
     $statusLength = self::validateLength($fixMessage,10,200);
@@ -60,7 +60,7 @@ class MessageController
     if ($statusLength !== 'pass') {
       
       $response = [ 
-        'status'       => FALSE,
+        'valid'        => false,
         'statusLength' => $statusLength,
         'length'       => strlen($fixMessage),
       ];
@@ -68,23 +68,23 @@ class MessageController
     }
 
     if($statusLength === 'pass') {
+
       $value  = self::$conn->myEscapeString($fixMessage);
       $query  = "INSERT INTO message ( body ) VALUE ('$value')";  
       $result = self::$conn->myQuery($query);
       
       //mengembalikan response bila gagal
       if (!$result) $statusQuery = 'fail'; 
-        
-      if ($result) $statusQuery  = 'success';
+      if ($result)  $statusQuery = 'success';
 
       $response = [ 
-        'status'      => TRUE, 
-        'statusQuery' => $statusQuery,
+          'valid'       => true, 
+          'statusQuery' => $statusQuery,
       ];
     }
 
     
-    return redirect('/');
+    return redirect('/', $response);
       
   }
 

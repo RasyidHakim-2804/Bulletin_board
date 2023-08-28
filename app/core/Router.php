@@ -5,70 +5,70 @@ namespace App\Core;
 class Router
 {
 
-  private $error = array();
-  private $found = false;
+  private static $error = array();
+  private static $found = false;
   
-  private $method;
-  private $uri;
-  private $controller;
-  private $responseCode;
+  private static $method;
+  private static $uri;
+  private static $controller;
+  private static $responseCode;
   
 
   //mendefinisikan route
-  public function __construct(string $method, string $uri)
+  public static function init(string $method, string $uri)
   {
-    $this->uri    = $uri;
-    $this->method = $method;
+    self::$uri    = $uri;
+    self::$method = $method;
   }
 
 
   //
-  private function setResponseCode(int $response_code)
+  private static function setResponseCode(int $response_code)
   {
-    $this->responseCode = $response_code;
-    http_response_code($this->responseCode);
+    self::$responseCode = $response_code;
+    http_response_code(self::$responseCode);
   }
 
 
   //error route
-  public function errorRoute(int $response_code, callable $callback){
-    $this->error[$response_code] = $callback;
+  public static function errorRoute(int $response_code, callable $callback){
+    self::$error[$response_code] = $callback;
   }
 
   //error handling
-  public function errorHandling()
+  public static function errorHandling()
   {
-    $code     = $this->responseCode;
-    $callback = $this->error[$code];
+    $code     = self::$responseCode;
+    $callback = self::$error[$code];
     $callback();
   }
 
 
   //menjalankan class
-  public function route(string $method, string $uri, $controller)
+  public static function route(string $method, string $uri, $controller)
   {
     
-    if ($this->uri === $uri && $this->method === $method) {
+    if (self::$uri === $uri && self::$method === $method) {
 
-      $this->controller = $controller;
-      $this->found      = true;
+      self::$controller = $controller;
+      self::$found      = true;
 
     }
   }
 
-  public function __destruct()
+  public static function run()
   {
-    if($this->found === true){
-      $this->setResponseCode(200);
-      $controller = $this->controller;
+    if(self::$found === true){
+      self::setResponseCode(200);
+      $controller = self::$controller;
       
       call_user_func($controller);
 
     }
 
-    if($this->found === false) {
-      $this->setResponseCode(404);
-      return $this->errorHandling();
+    if(self::$found === false) {
+      self::setResponseCode(404);
+      return self::errorHandling();
     }
   }
 }

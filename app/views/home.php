@@ -1,5 +1,27 @@
 <?php
-  $data;
+
+
+if (isset($_GET['response'])) {
+
+  $status  = $_GET['response'];
+  
+
+  if ($status['valid'] === FALSE) {
+
+    echo "Your data is: {$status['statusLength']} <br>";
+    echo "Length of your data: {$status['length']} <br>";
+    echo "Please try again";
+
+  }
+
+  if ($status['valid'] === TRUE) {
+
+    echo "Your data is {$status['statusQuery']} to store in Database <br>";
+
+  }
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +60,7 @@
         <th>CREATED ON</th>
       </tr>
       <?php
-      foreach($data as $data){
+      foreach($row as $data){
         $time = $data['time'];
         echo '<tr>';
         echo '<td>' . $data['id']   . '</td>';
