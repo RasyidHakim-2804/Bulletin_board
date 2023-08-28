@@ -24,7 +24,7 @@ abstract class Model
         return self::$connection;
     }
 
-    protected static function getModel()
+    protected static function __invoke()
     {
         return self::class;
     } 
