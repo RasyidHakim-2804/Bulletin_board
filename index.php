@@ -25,6 +25,7 @@ if(isset($_GET['response'])) {
 Router::init($method, $path);
 
 
+//route
 Router::route('GET','/', function(){
 
   $data = MessageController::get();
