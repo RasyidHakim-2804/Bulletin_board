@@ -30,7 +30,7 @@ class Router
   }
 
 
-  //error route
+  //route for error
   public static function errorRoute(int $response_code, callable $callback){
     self::$error[$response_code] = $callback;
   }
@@ -44,7 +44,7 @@ class Router
   }
 
 
-  //menjalankan class
+  //match route and url web
   public static function route(string $method, string $uri, $controller)
   {
     
@@ -56,6 +56,7 @@ class Router
     }
   }
 
+  //run route
   public static function run()
   {
     if(self::$found === true){
