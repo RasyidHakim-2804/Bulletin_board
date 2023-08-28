@@ -10,6 +10,8 @@ class Message extends Model
   {
     $table = Model::myQuery("SELECT * FROM message ORDER BY id DESC");
     $row   = Model::myAssoc($table);
+    
+    Model::myClose();
 
     return $row;
   }
@@ -19,6 +21,8 @@ class Message extends Model
     $value  = Model::myEscapeString($message);
     $query  = "INSERT INTO message ( body ) VALUE ('$value')";
     $result = Model::myQuery($query);
+
+    Model::myClose();
 
     return $result;
   }
