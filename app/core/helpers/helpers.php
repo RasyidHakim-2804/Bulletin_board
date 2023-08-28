@@ -27,6 +27,7 @@ function view(string $viewName, $data = []) {
 
 //function untuk mendirect ke router beserta mengirim response GET
 function redirect(string $to, $query = null) {
+  
   $to = DOMAIN . $to;
 
   if ($query === null) {
@@ -39,7 +40,7 @@ function redirect(string $to, $query = null) {
   if ($query !== null) {
 
     $jsonResponse = json_encode($query);
-    $encodedJson = urlencode($jsonResponse);
+    $encodedJson  = urlencode($jsonResponse);
     header("Location: {$to}?response={$encodedJson}");
     exit();
 
@@ -62,9 +63,9 @@ function myParsedUri(string $uri) {
  * karena response GET yang dikirim dari function redirect() diatas berupa json(string)
  * maka kita harus mengubahnya lagi menjadi array
  */
-function getQueryUri() {
+function getQueryUri($query) {
 
-  $encodedJson   = $_GET['response'] ?? '';
+  $encodedJson   = $query;
   $jsonResponse  = urldecode($encodedJson);
   $responseArray = json_decode($jsonResponse, true);
 

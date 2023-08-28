@@ -18,7 +18,7 @@ $query       = $uri['query']?? null;
 $method      = $_SERVER['REQUEST_METHOD'];
 
 if(isset($_GET['response'])) {
-  $_GET['response'] = getQueryUri();
+  $_GET['response'] = getQueryUri($_GET['response']);
 } 
 
 //bikin router
