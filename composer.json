@@ -1,10 +1,19 @@
-{
-  "autoload": {
-      "psr-4": {
-          "App\\Core\\": "app/core/",
-          "App\\Core\\Helpers\\":"app/core/helpers/",
-          "App\\Controllers\\":"app/Controllers/",
-          "App\\Models\\":"app/models/"
-      }
-  }
+{    "name": "hakim/bulletin_board",
+    "autoload": {
+        "psr-4": {
+            "App\\Core\\": "app/core/",
+            "App\\Core\\Helpers\\":"app/core/helpers/",
+            "App\\Controllers\\":"app/Controllers/",
+            "App\\Models\\":"app/models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rasyid Hakim",
+            "email": "ragamgit78@gmail.com"
+        }
+    ],
+    "require": {}
+ 
+  
 }
