@@ -3,7 +3,7 @@ namespace App\Core;
 
 use \mysqli;
 
-abstract class Model
+class Database
 {
     private const SERVER   = "localhost";
     private const USER     = "root";

@@ -20,7 +20,7 @@ function view(string $viewName, $data = []) {
       
       echo ob_get_clean();
   } else {
-      echo "View not found!: ";
+      echo "View not found!: {$viewPath}";
   }
 }
 
@@ -41,7 +41,9 @@ function redirect(string $to, $query = null) {
 
     $jsonResponse = json_encode($query);
     $encodedJson  = urlencode($jsonResponse);
-    header("Location: {$to}?response={$encodedJson}");
+    $response     = base64_encode($encodedJson);
+
+    header("Location: {$to}?response={$response}");
     exit();
 
   }
@@ -65,10 +67,12 @@ function myParsedUri(string $uri) {
  */
 function getQueryUri($query) {
 
-  $decodedString = urldecode($query);
-  $data          = substr($decodedString, strpos($decodedString, "=") + 1);
-  $array         = json_decode($data, true);
+  $response      = base64_decode($query);
+  $urlDecoded    = urldecode($response);
+  $array         = json_decode($urlDecoded, true);
 
-  return $array;
+  if (!is_array($array)) return null;
+
+  if (is_array($array)) return $array;
 
 }

@@ -14,11 +14,10 @@ use function App\Core\Helpers\view;
 
 $uri         = myParsedUri($_SERVER['REQUEST_URI']);
 $path        = $uri['path']?? $uri;
-$query       = $uri['query']?? null;
 $method      = $_SERVER['REQUEST_METHOD'];
 
-if(isset($_GET['response'])) {
-  $_GET['response'] = getQueryUri($query);
+if(isset($_GET['response'])) {  
+  $_GET['response'] = getQueryUri($_GET['response']);
 } 
 
 //bikin router

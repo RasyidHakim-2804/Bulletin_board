@@ -1,28 +1,28 @@
 <?php
 namespace App\Models;
 
-use App\Core\Model;
+use App\Core\Database;
 
-class Message extends Model
+class Message extends Database
 {
   
   public static function get()
   {
-    $table = Model::myQuery("SELECT * FROM message ORDER BY id DESC");
-    $row   = Model::myAssoc($table);
+    $table = Database::myQuery("SELECT * FROM message ORDER BY id DESC");
+    $row   = Database::myAssoc($table);
     
-    Model::myClose();
+    Database::myClose();
 
     return $row;
   }
 
   public static function store($message)
   {
-    $value  = Model::myEscapeString($message);
+    $value  = Database::myEscapeString($message);
     $query  = "INSERT INTO message ( body ) VALUE ('$value')";
-    $result = Model::myQuery($query);
+    $result = Database::myQuery($query);
 
-    Model::myClose();
+    Database::myClose();
 
     return $result;
   }
