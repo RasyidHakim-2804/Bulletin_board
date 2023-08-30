@@ -19,7 +19,7 @@ class Model
     $this->attributes = $attributes;
   }
 
-  public function getAll(string $orderBy = "DESC")
+  public function getAll(string $orderBy = "ASC")
   {
     $query = "SELECT * FROM {$this->table} ORDER BY id {$orderBy}";
 

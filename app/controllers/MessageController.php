@@ -16,7 +16,7 @@ class MessageController
   public static function get()
   {
     
-    $row    = (new Message)->getAll();
+    $row    = (new Message)->getAll('DESC');
 
     //membersihkan data untuk menghilangkan html
     array_walk($row, function ( &$value) {
