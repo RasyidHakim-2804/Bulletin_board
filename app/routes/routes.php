@@ -27,7 +27,10 @@ if(isset($_GET['response'])) {
 Router::init($method, $path);
 
 
-//route
+/**
+ * membuat route
+ * controller yang bisa dipanggil dari class hanya static function saja
+ */
 Router::route('GET', ['/', '/home', '/index.php'], [MessageController::class, 'get']);
 
 Router::route('POST', '/post', [MessageController::class, 'store']);
@@ -35,7 +38,10 @@ Router::route('POST', '/post', [MessageController::class, 'store']);
 Router::errorRoute( 404, [ErrorController::class, 'notFound']);
 
 
-//testing
+/**
+ * ini route untuk testing
+ * halamannya ada viwes
+ */
 Router::route('GET', '/test', function() {
   return view('test', ['nama' => 'rasyid']);
 });

@@ -5,7 +5,7 @@ use function App\Helpers\view;
 
 class ErrorController
 {
-  public function notFound()
+  public static function notFound()
   {
     return view('notfound');
   }

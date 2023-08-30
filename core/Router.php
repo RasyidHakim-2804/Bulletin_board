@@ -73,8 +73,8 @@ class Router
       self::setResponseCode(404);
       
       $errorController = self::$error[404];
-      echo $errorController;
-      //call_user_func($errorController);
+      //echo $errorController;
+      call_user_func($errorController);
     }
   }
 }
