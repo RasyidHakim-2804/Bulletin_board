@@ -1,10 +1,10 @@
 {   "name": "hakim/bulletin_board",
     "autoload": {
         "psr-4": {
-            "App\\Core\\": "app/core/",
             "App\\Helpers\\":"app/helpers/",
             "App\\Controllers\\":"app/Controllers/",
             "App\\Models\\":"app/models/",
+            "Core\\":"core/",
             "Dotenv\\":"vendor/vlucas/phpdotenv/src/"
         }
     },

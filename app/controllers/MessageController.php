@@ -4,19 +4,20 @@ namespace App\Controllers;
 
 
 use App\Models\Message;
-use App\Core\Helpers\Validation;
+use App\Helpers\Validation;
 
-use function App\Core\Helpers\redirect;
+use function App\Helpers\redirect;
+use function App\Helpers\view;
 
 class MessageController
 {
   use Validation;
   
   //menampilkan data
-  public static function get(): array
+  public function get()
   {
     
-    $row    = Message::get();
+    $row    = (new Message)->getAll();
 
     //membersihkan data untuk menghilangkan html
     array_walk($row, function ( &$value) {
@@ -29,14 +30,14 @@ class MessageController
 
     });
 
-    return $row;
+    return view('home', ['row' => $row]);
     
   }
 
 
   
   //menambah pesan
-  public static function store()
+  public function store()
   {
 
     $message      = $_POST['message_data']?? '';

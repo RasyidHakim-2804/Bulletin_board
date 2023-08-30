@@ -5,7 +5,6 @@ if (isset($_GET['response'])) {
 
   $status  = $_GET['response'];
   
-
   if ($status['valid'] === FALSE) {
 
     echo "Your data is: {$status['statusLength']} <br>";
@@ -48,10 +47,13 @@ if (isset($_GET['response'])) {
       <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />
       <input type="submit" name="submit" value="Submit">
     </form>
+    <form action="" method="GET">
+      <input type="submit" value="Refresh">
+    </form>
   </div>
   <hr><br><br>
 
-  
+  <!-- show data -->
   <div>
     <table style="width: 70%;">
       <tr>

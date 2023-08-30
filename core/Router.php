@@ -1,5 +1,5 @@
 <?php
-namespace App\Core;
+namespace Core;
 
 
 class Router
@@ -31,21 +31,13 @@ class Router
 
 
   //route for error
-  public static function errorRoute(int $response_code, callable $callback){
-    self::$error[$response_code] = $callback;
-  }
-
-  //error handling
-  public static function errorHandling()
-  {
-    $code     = self::$responseCode;
-    $callback = self::$error[$code];
-    $callback();
+  public static function errorRoute(int $response_code, callable|array $controller){
+    self::$error[$response_code] = $controller;
   }
 
 
   //match route and url web
-  public static function route(string $method, string|array $uri, $controller)
+  public static function route(string $method, string|array $uri, callable|array $controller)
   {
     if(is_array($uri)) {
       foreach($uri as $path) {
@@ -79,7 +71,10 @@ class Router
 
     if(self::$found === false) {
       self::setResponseCode(404);
-      return self::errorHandling();
+      
+      $errorController = self::$error[404];
+      echo $errorController;
+      //call_user_func($errorController);
     }
   }
 }

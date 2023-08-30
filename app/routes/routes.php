@@ -1,0 +1,47 @@
+<?php
+
+use Core\Router;
+use App\Controllers\ErrorController;
+use App\Controllers\MessageController;
+
+use function App\Helpers\getQueryUri;
+use function App\Helpers\myParsedUri;
+use function App\Helpers\redirect;
+use function App\Helpers\view;
+
+
+$uri         = myParsedUri($_SERVER['REQUEST_URI']);
+$path        = $uri['path']?? $uri;
+$method      = $_SERVER['REQUEST_METHOD'];
+
+if(isset($_GET['response'])) {  
+  $_GET['response'] = getQueryUri($_GET['response']);
+} 
+
+
+
+
+//bikin router
+Router::init($method, $path);
+
+
+//route
+Router::route('GET', ['/', '/home', '/index.php'], [MessageController::class, 'get']);
+
+Router::route('POST', '/post', [MessageController::class, 'store']);
+
+Router::errorRoute( 404, [ErrorController::class, 'notFound']);
+
+
+//testing
+Router::route('GET', '/test', function() {
+  return view('test', ['nama' => 'rasyid']);
+});
+
+Router::route('GET', '/coba', function() {
+  return redirect('/test');
+});
+
+
+//jalankan routes
+Router::run();

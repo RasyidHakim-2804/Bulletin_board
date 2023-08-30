@@ -1,49 +1,32 @@
 <?php
 
 require_once "vendor/autoload.php";
-require_once "app/core/helpers/helpers.php";
-
-use App\Core\Router;
-use App\Controllers\MessageController;
-
-use function App\Core\Helpers\getQueryUri;
-use function App\Core\Helpers\myParsedUri;
-use function App\Core\Helpers\redirect;
-use function App\Core\Helpers\view;
 
 
-$uri         = myParsedUri($_SERVER['REQUEST_URI']);
-$path        = $uri['path']?? $uri;
-$method      = $_SERVER['REQUEST_METHOD'];
+use Dotenv\Dotenv;
 
-if(isset($_GET['response'])) {  
-  $_GET['response'] = getQueryUri($_GET['response']);
-} 
-
-//bikin router
-Router::init($method, $path);
+$dotenv      = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 
-//route
-Router::route('GET', ['/', '/home'], function(){
+require_once "app/helpers/helpers.php";
 
-  $data = MessageController::get();
-  return view('home', ['row' => $data]);
 
-});
 
-Router::route('POST', '/post', [MessageController::class, 'store']);
+echo '<pre>';
+// $test = getenv();
+// var_dump($test);
 
-Router::route('GET', '/test', function() {
-  return view('test', ['nama' => 'rasyid']);
-});
+var_dump($_ENV);
 
-Router::route('GET', '/coba', function() {
-  return redirect('/test');
-});
+var_dump(PDO::getAvailableDrivers());
 
-Router::errorRoute( 404, function() {
-  require_once 'app/views/notfound.php';
-});
+echo '</pre>';
 
-Router::run();
+echo '<pre>';
+try {
+  require_once 'app/routes/routes.php';
+} catch (\Exception $e) {
+  $e->getMessage();
+}
+echo '</pre>';

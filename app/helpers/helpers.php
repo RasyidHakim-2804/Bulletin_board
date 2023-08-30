@@ -1,11 +1,9 @@
 <?php
-namespace App\Core\Helpers;
+
+namespace App\Helpers;
 
 
-
-const DIR_APP = __DIR__ . "\..\..\..\app";
-const DOMAIN   ='/Bulletin_board';
-
+const DIR_APP = __DIR__ . "\..\..\app";
 
 //function untuk menampilkan page/halaman
 function view(string $viewName, $data = []) {
@@ -28,7 +26,7 @@ function view(string $viewName, $data = []) {
 //function untuk mendirect ke router beserta mengirim response GET
 function redirect(string $to, $query = null) {
   
-  $to = DOMAIN . $to;
+  $to = $_ENV['DOMAIN'] . $to;
 
   if ($query === null) {
    
@@ -54,7 +52,7 @@ function redirect(string $to, $query = null) {
 function myParsedUri(string $uri) {
 
   $clearedUri = preg_replace('/\/++/', '/', $uri);
-  $clearedUri = str_replace(DOMAIN,'',$clearedUri);
+  $clearedUri = str_replace($_ENV['DOMAIN'],'',$clearedUri);
   $clearedUri = parse_url($clearedUri);
   
   return $clearedUri;
