@@ -21,7 +21,9 @@ if(isset($_GET['response'])) {
 
 
 
-//bikin router
+/**
+ * inisiasi rute dari url browser
+ */
 Router::init($method, $path);
 
 

@@ -7,11 +7,12 @@ use Core\Model;
 class Message extends Model
 {
 
-  private $table = 'message';
+  public string $table    = 'message';
+  public array $tributes  = ['id', 'body', 'time'];
 
   public function __construct()
   {
-    parent::__construct($this->table);
+    parent::__construct($this->table, $this->attributes);
   }
 
   

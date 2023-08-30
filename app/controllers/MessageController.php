@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 
@@ -14,7 +13,7 @@ class MessageController
   use Validation;
   
   //menampilkan data
-  public function get()
+  public static function get()
   {
     
     $row    = (new Message)->getAll();
@@ -33,11 +32,9 @@ class MessageController
     return view('home', ['row' => $row]);
     
   }
-
-
   
   //menambah pesan
-  public function store()
+  public static function store()
   {
 
     $message      = $_POST['message_data']?? '';
@@ -56,12 +53,8 @@ class MessageController
     }
 
     if($statusLength === 'pass') {
-  
-      $result = Message::store($fixMessage);
       
-      //mengembalikan response bila gagal
-      if (!$result) $statusQuery = 'fail'; 
-      if ($result)  $statusQuery = 'success';
+      $statusQuery = (new Message)->store(['body' => $fixMessage]);
 
       $response = [ 
           'valid'       => true, 
@@ -69,7 +62,6 @@ class MessageController
       ];
     }
 
-    
     return redirect('/home', $response);
       
   }
