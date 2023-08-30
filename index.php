@@ -1,5 +1,5 @@
 <?php
-
+//echo '<pre>';
 require_once "vendor/autoload.php";
 
 use Dotenv\Dotenv;
@@ -17,4 +17,4 @@ require_once 'app/routes/routes.php';
 // } catch (\Exception $e) {
 //   $e->getMessage();
 // }
-// //echo '</pre>';
+//echo '</pre>';

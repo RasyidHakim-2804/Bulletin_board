@@ -8,7 +8,7 @@ class Message extends Model
 {
 
   public string $table    = 'message';
-  public array $tributes  = ['id', 'body', 'time'];
+  public array $attributes  = ['id', 'body', 'time'];
 
   public function __construct()
   {

@@ -7,7 +7,7 @@ class Model
 {
 
   public string  $table;
-  public array   $attributes = [];
+  public array   $attributes;
   private PDO    $db;
 
   public function __construct(string $table, array $attributes)
@@ -25,6 +25,7 @@ class Model
 
     return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
   }
+
 
   public function store(array $data)
   {
@@ -49,5 +50,6 @@ class Model
 
     return 'success';
   }
+
   
 }
