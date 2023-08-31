@@ -1,8 +1,6 @@
 <?php
 namespace Core;
 
-
-use function App\Helpers\getQueryUri;
 use function App\Helpers\myParsedUri;
 
 class Router
@@ -20,15 +18,11 @@ class Router
   //mendefinisikan route
   public static function init()
   {      
-    $uri         = myParsedUri($_SERVER['REQUEST_URI']);
-    $path        = $uri['path']?? $uri;
-    $method      = $_SERVER['REQUEST_METHOD'];
+    $uri          = myParsedUri($_SERVER['REQUEST_URI']);
+    $path         = $uri['path']?? $uri;
+    $method       = $_SERVER['REQUEST_METHOD'];
 
-    if(isset($_GET['response'])) {  
-      $_GET['response'] = getQueryUri($_GET['response']);
-    }
-
-    self::$path    = $path;
+    self::$path   = $path;
     self::$method = $method;
   }
 

@@ -7,46 +7,64 @@ const DIR_APP = __DIR__ . "\..\..\app";
 
 //function untuk menampilkan page/halaman
 function view(string $viewName, $data = []) {
-
-  $viewPath = DIR_APP . "\\views\\" . $viewName . '.php';
-  
-  if (file_exists(dirname($viewPath))) {
-      extract($data);
-      ob_start();
-
-      include $viewPath;
-      
-      echo ob_get_clean();
-  } else {
-      echo "View not found!: {$viewPath}";
+  try {
+    extract($data);
+    include_once 'app/views/' . $viewName . '.php';
+  } catch (\Exception $e) {
+    echo $e->getMessage();
   }
 }
 
 
 //function untuk mendirect ke router beserta mengirim response GET
-function redirect(string $to, $query = null) {
+function redirect(string $to) {
   
   $to = $_ENV['DOMAIN'] . $to;
 
-  if ($query === null) {
-   
-    header("Location: {$to}");
-    exit();
-
-  }
-
-  if ($query !== null) {
-
-    $jsonResponse = json_encode($query);
-    $encodedJson  = urlencode($jsonResponse);
-    $response     = base64_encode($encodedJson);
-
-    header("Location: {$to}?response={$response}");
-    exit();
-
-  }
-  
+  header("Location: {$to}");
+  exit();
 }
+/**
+ * function-function untuk session
+ */
+
+/**
+ * mengirim pesan lewat $_SESSIONS
+ */
+function setSession(string $key, $value) {
+  
+  if(!session_id()) session_start();
+
+  $_SESSION[$key] = $value;
+}
+
+/**
+ * function untuk memriksa apakah session memiliki key $name 
+ */
+function isSessionSet(string $name) {
+
+  if(!session_id()) session_start();
+
+  return isset($_SESSION[$name]) ? TRUE : FALSE;
+
+}
+/**
+ * function untuk mendapatkan variabel session[$name]
+ */
+function sessionGet(string $name) {
+  if(!session_id()) session_start();
+
+  return $_SESSION[$name];
+}
+
+
+
+
+
+/**
+ * 
+ */
+
 
 //function untuk parsed uri
 function myParsedUri(string $uri) {
@@ -63,14 +81,3 @@ function myParsedUri(string $uri) {
  * karena response GET yang dikirim dari function redirect() diatas berupa json(string)
  * maka kita harus mengubahnya lagi menjadi array
  */
-function getQueryUri($query) {
-
-  $response      = base64_decode($query);
-  $urlDecoded    = urldecode($response);
-  $array         = json_decode($urlDecoded, true);
-
-  if (!is_array($array)) return null;
-
-  if (is_array($array)) return $array;
-
-}

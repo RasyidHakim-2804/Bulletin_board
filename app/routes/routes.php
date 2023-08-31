@@ -21,7 +21,7 @@ Router::init();
  */
 Router::route('GET', ['/', '/home', '/index.php'], [MessageController::class, 'get']);
 
-Router::route('POST', '/post', [MessageController::class, 'store']);
+Router::route('POST', '/message', [MessageController::class, 'store']);
 
 Router::errorRoute( 404, [ErrorController::class, 'notFound']);
 

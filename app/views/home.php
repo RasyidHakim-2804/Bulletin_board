@@ -1,9 +1,10 @@
 <?php
+use function App\Helpers\sessionGet;
+use function App\Helpers\isSessionSet;
 
+if (isSessionSet('response')) {
 
-if (isset($_GET['response'])) {
-
-  $status  = $_GET['response'];
+  $status  = sessionGet('response');
   
   if ($status['valid'] === FALSE) {
 
@@ -41,7 +42,7 @@ if (isset($_GET['response'])) {
 </head>
 <body>
   <div>
-    <form action="post" method="POST">
+    <form action="message" method="POST">
       <h4>Your message must be 10 to 200 characters long</h4>
       <h4>Spaces at the beginning and at the end of a sentence are not counted</h4>
       <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />

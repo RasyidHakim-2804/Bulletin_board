@@ -7,6 +7,7 @@ use App\Helpers\Validation;
 
 use function App\Helpers\redirect;
 use function App\Helpers\view;
+use function App\Helpers\setSession;
 
 class MessageController
 {
@@ -62,7 +63,8 @@ class MessageController
       ];
     }
 
-    return redirect('/home', $response);
+    setSession('response', $response);
+    return redirect('/home');
       
   }
 
