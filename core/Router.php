@@ -2,6 +2,9 @@
 namespace Core;
 
 
+use function App\Helpers\getQueryUri;
+use function App\Helpers\myParsedUri;
+
 class Router
 {
 
@@ -9,15 +12,23 @@ class Router
   private static $found = false;
   
   private static $method;
-  private static $uri;
+  private static $path;
   private static $controller;
   private static $responseCode;
   
 
   //mendefinisikan route
-  public static function init(string $method, string $uri)
-  {
-    self::$uri    = $uri;
+  public static function init()
+  {      
+    $uri         = myParsedUri($_SERVER['REQUEST_URI']);
+    $path        = $uri['path']?? $uri;
+    $method      = $_SERVER['REQUEST_METHOD'];
+
+    if(isset($_GET['response'])) {  
+      $_GET['response'] = getQueryUri($_GET['response']);
+    }
+
+    self::$path    = $path;
     self::$method = $method;
   }
 
@@ -41,7 +52,7 @@ class Router
   {
     if(is_array($uri)) {
       foreach($uri as $path) {
-        if (self::$uri === $path && self::$method === $method) {
+        if (self::$path === $path && self::$method === $method) {
 
           self::$controller = $controller;
           self::$found      = true;
@@ -50,7 +61,7 @@ class Router
       }  
     }
 
-    if (self::$uri === $uri && self::$method === $method) {
+    if (self::$path === $uri && self::$method === $method) {
 
       self::$controller = $controller;
       self::$found      = true;
