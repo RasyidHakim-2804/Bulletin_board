@@ -19,9 +19,9 @@ class Model
     $this->column = $column;
   }
 
-  public function getAll(string $orderBy = "ASC")
+  public function getAll(string $sort = "ASC")
   {
-    $query = "SELECT * FROM {$this->table} ORDER BY id {$orderBy}";
+    $query = "SELECT * FROM {$this->table} ORDER BY id {$sort}";
 
     return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
   }
