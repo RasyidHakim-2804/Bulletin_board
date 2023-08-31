@@ -7,16 +7,16 @@ class Model
 {
 
   public string  $table;
-  public array   $attributes;
+  public array   $column;
   private PDO    $db;
 
-  public function __construct(string $table, array $attributes)
+  public function __construct(string $table, array $column)
   {
     $db = new Database();
 
-    $this->db         = $db->getDB();
-    $this->table      = $table;
-    $this->attributes = $attributes;
+    $this->db     = $db->getDB();
+    $this->table  = $table;
+    $this->column = $column;
   }
 
   public function getAll(string $orderBy = "ASC")
@@ -32,7 +32,7 @@ class Model
     array_walk($data, function( &$value, &$key){
       
       //jika key sesuai dengan properti table
-      if(in_array($key, $this->attributes)) {
+      if(in_array($key, $this->column)) {
 
         try {  
           $sql  = "INSERT INTO {$this->table} ({$key}) VALUE ( :value)";

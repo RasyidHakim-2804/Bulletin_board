@@ -8,11 +8,11 @@ class Message extends Model
 {
 
   public string $table    = 'message';
-  public array $attributes  = ['id', 'body', 'time'];
+  public array $column    = ['id', 'body', 'time'];
 
   public function __construct()
   {
-    parent::__construct($this->table, $this->attributes);
+    parent::__construct($this->table, $this->column);
   }
 
   
