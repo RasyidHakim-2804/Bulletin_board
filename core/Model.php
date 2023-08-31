@@ -10,13 +10,11 @@ class Model
   public array   $column;
   private PDO    $db;
 
-  public function __construct(string $table, array $column)
+  public function __construct()
   {
     $db = new Database();
 
     $this->db     = $db->getDB();
-    $this->table  = $table;
-    $this->column = $column;
   }
 
   public function getAll(string $sort = "ASC")

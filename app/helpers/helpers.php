@@ -54,7 +54,10 @@ function isSessionSet(string $name) {
 function sessionGet(string $name) {
   if(!session_id()) session_start();
 
-  return $_SESSION[$name];
+  $result = $_SESSION[$name];
+  session_unset();
+  
+  return $result;
 }
 
 
