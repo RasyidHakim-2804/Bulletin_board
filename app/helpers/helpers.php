@@ -51,7 +51,7 @@ function isSessionSet(string $key) {
 
   if(!session_id()) session_start();
 
-  return isset($_SESSION[$key]) ? TRUE : FALSE;
+  return isset($_SESSION[$key]);
 
 }
 /**
