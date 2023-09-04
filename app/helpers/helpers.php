@@ -47,25 +47,25 @@ function setFlashMessgae(string $key, $value){
 /**
  * function untuk memriksa apakah session memiliki key $name 
  */
-function isSessionSet(string $name) {
+function isSessionSet(string $key) {
 
   if(!session_id()) session_start();
 
-  return isset($_SESSION[$name]) ? TRUE : FALSE;
+  return isset($_SESSION[$key]) ? TRUE : FALSE;
 
 }
 /**
  * function untuk mendapatkan variabel session[$name]
  */
-function sessionGet(string $name) {
+function sessionGet(string $key) {
   if(!session_id()) session_start();
 
-  $result = $_SESSION[$name];
+  $result = $_SESSION[$key];
 
-  if(isset($_SESSION[$name]['flasher'])) {
-    $result = $_SESSION[$name]['flasher'];
+  if(isset($_SESSION[$key]['flasher'])) {
+    $result = $_SESSION[$key]['flasher'];
 
-    unset($_SESSION[$name]);
+    unset($_SESSION[$key]);
   }
 
   return $result;
