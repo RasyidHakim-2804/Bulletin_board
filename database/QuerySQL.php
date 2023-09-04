@@ -6,7 +6,7 @@ use PDOException;
 
 use function App\Helpers\setSession;
 
-class QuerySQL extends DB
+class QuerySQL
 {
   //properti for table
   protected $db;
