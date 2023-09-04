@@ -87,7 +87,7 @@ class QuerySQL extends DB
       $this->bind($key, $value);
     }
 
-    return $this;
+    return $this->execute();
   }
 
   
