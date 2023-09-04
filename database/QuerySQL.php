@@ -6,7 +6,7 @@ use PDOException;
 
 use function App\Helpers\setSession;
 
-class QuerySQL
+abstract class QuerySQL
 {
   //properti for table
   protected $db;
@@ -45,7 +45,7 @@ class QuerySQL
     $this->param = $param;
   }
   
-  private function bind($key, $value)
+  public function bind($key, $value)
   {
     $type = PDO::PARAM_STR;
 
