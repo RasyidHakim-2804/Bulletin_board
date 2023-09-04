@@ -38,6 +38,12 @@ function setSession(string $key, $value) {
   $_SESSION[$key] = $value;
 }
 
+function setFlashMessgae(string $key, $value){
+  if(!session_id()) session_start();
+
+  $_SESSION[$key] = ['flasher' => $value];
+}
+
 /**
  * function untuk memriksa apakah session memiliki key $name 
  */
@@ -54,11 +60,16 @@ function isSessionSet(string $name) {
 function sessionGet(string $name) {
   if(!session_id()) session_start();
 
-  return $_SESSION[$name];
+  $result = $_SESSION[$name];
+
+  if(isset($_SESSION[$name]['flasher'])) {
+    $result = $_SESSION[$name]['flasher'];
+
+    unset($_SESSION[$name]);
+  }
+
+  return $result;
 }
-
-//function 
-
 
 
 /**
@@ -76,8 +87,3 @@ function myParsedUri(string $uri) {
   return $clearedUri;
 
 }
-
-/**
- * karena response GET yang dikirim dari function redirect() diatas berupa json(string)
- * maka kita harus mengubahnya lagi menjadi array
- */

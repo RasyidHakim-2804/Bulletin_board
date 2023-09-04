@@ -6,8 +6,8 @@ use App\Models\Message;
 use App\Helpers\Validation;
 
 use function App\Helpers\redirect;
+use function App\Helpers\setFlashMessgae;
 use function App\Helpers\view;
-use function App\Helpers\setSession;
 
 class MessageController
 {
@@ -63,7 +63,7 @@ class MessageController
       ];
     }
 
-    setSession('response', $response);
+    setFlashMessgae('response', $response);
     return redirect('/home');
       
   }
