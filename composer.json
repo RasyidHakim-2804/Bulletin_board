@@ -4,6 +4,7 @@
             "App\\Helpers\\":"app/helpers/",
             "App\\Controllers\\":"app/Controllers/",
             "App\\Models\\":"app/models/",
+            "Database\\":"database/",
             "Core\\":"core/",
             "Dotenv\\":"vendor/vlucas/phpdotenv/src/"
         }

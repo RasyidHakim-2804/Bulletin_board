@@ -55,7 +55,7 @@ class MessageController
 
     if($statusLength === 'pass') {
       
-      $statusQuery = (new Message)->store(['body' => $fixMessage]);
+      $statusQuery = (new Message)->create(['body' => $fixMessage])->execute();
 
       $response = [ 
           'valid'       => true, 

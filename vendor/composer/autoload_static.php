@@ -30,6 +30,7 @@ class ComposerStaticInitc93d7c551660920c66439db4c5ecfb47
         'D' => 
         array (
             'Dotenv\\' => 7,
+            'Database\\' => 9,
         ),
         'C' => 
         array (
@@ -68,6 +69,10 @@ class ComposerStaticInitc93d7c551660920c66439db4c5ecfb47
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
             1 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Database\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/database',
         ),
         'Core\\' => 
         array (

@@ -16,8 +16,9 @@ if (isSessionSet('response')) {
 
   if ($status['valid'] === TRUE) {
 
-    echo "Your data is {$status['statusQuery']} to store in Database <br>";
-
+    if($status['statusQuery']) echo "Your data is success to store in Database <br>";
+    //var_dump($status['statusQuery']);
+    if(!$status['statusQuery']) echo sessionGet('error');
   }
 
 }
