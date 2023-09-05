@@ -2,9 +2,6 @@
 namespace Database;
 
 use PDO;
-use PDOException;
-
-use function App\Helpers\set_session;
 
 abstract class QuerySQL
 {
@@ -13,12 +10,6 @@ abstract class QuerySQL
   public string $table;
   public array $column;
   
-  //properti for prepared query
-  protected $query;
-  protected $keys;
-  protected $param;
-  protected $values;
-  protected $stmt;
 
   public function __construct()
   {
@@ -31,14 +22,13 @@ abstract class QuerySQL
   {
     $column   = array_keys($field);
 
-    $param = ':' . implode(', :', $column);
-    $keys  = implode(', ', $column);
+    $params = ':' . implode(', :', $column);
+    $keys   = implode(', ', $column);
 
-    $this->keys  = $keys;
-    $this->param = $param;
+    return [$keys, $params];
   }
   
-  public function bind($key, $value)
+  public function bind($stmt, $key, $value)
   {
     $type = PDO::PARAM_STR;
 
@@ -48,50 +38,25 @@ abstract class QuerySQL
 
     if(is_null($value)) $type = PDO::PARAM_NULL;
 
-    $this->stmt->bindValue(":{$key}", $value, $type);
+    $stmt->bindValue(":{$key}", $value, $type);
 
-  }
-
-  private function cleanPrepare()
-  {
-    $this->query  = null;
-    $this->keys   = null;
-    $this->param  = null;
-    $this->values = null;
-    $this->stmt   = null;
-  }
-
-  public function execute()
-  {
-    $result =TRUE;
-    try {
-      $this->stmt->execute();
-    } catch (PDOException $e) {
-      set_session('error', $e->getMessage());
-      $result = FALSE;
-    }
-
-    $this->cleanPrepare();
-
-    return $result;
-    
   }
 
   //CRUD method
 
   public function create(array $field)
   {
-    $this->setPrepare($field);
+    [$keys, $params] = $this->setPrepare($field);
 
-    $this->query = "INSERT INTO {$this->table} ({$this->keys}) VALUES ({$this->param})";
+    $query = "INSERT INTO {$this->table} ({$keys}) VALUES ({$params})";
 
-    $this->stmt = $this->db->prepare($this->query);
+    $stmt  = $this->db->prepare($query);
 
     foreach ($field as $key => $value) {
-      $this->bind($key, $value);
+      $this->bind($stmt, $key, $value);
     }
 
-    return $this->execute();
+    return $stmt->execute();
   }
 
   

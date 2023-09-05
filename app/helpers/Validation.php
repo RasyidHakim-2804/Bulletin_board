@@ -5,7 +5,7 @@ namespace App\Helpers;
 trait Validation
 {
   //untuk membersihkan kalimat dari lebih satu spasi
-  public static function clearString( string $input, string $delimiter = ' '): string
+  public function clearString( string $input, string $delimiter = ' '): string
   {
     $cleanString = preg_replace("/\s++/", $delimiter, trim($input));
     
@@ -14,7 +14,7 @@ trait Validation
 
   
   //memeriksa panjang kalimat
-  public static function validateLength( string $input, int $min = 0, int $max = 0): string
+  public function validateLength( string $input, int $min = 0, int $max = 0): string
   {
     $characterLength = strlen($input);
 

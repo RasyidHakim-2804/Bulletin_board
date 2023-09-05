@@ -1,5 +1,5 @@
 <?php
-
+//echo '<pre>';
 require_once 'vendor/autoload.php';
 
 use Dotenv\Dotenv;
@@ -11,3 +11,4 @@ $dotenv->load();
 require_once 'app/helpers/helpers.php';
 require_once 'app/routes/routes.php';
 
+//echo '</pre>';

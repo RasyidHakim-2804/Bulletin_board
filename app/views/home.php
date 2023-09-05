@@ -1,11 +1,7 @@
 <?php
-use function App\Helpers\is_session_set;
-use function App\Helpers\get_session;
 
-if (is_session_set('response')) {
+if (isset($response)) {
 
-  $response  = get_session('response');
-  
   if (isset($response['no-valid'])) {
     $status = $response['no-valid'];
 
@@ -14,7 +10,7 @@ if (is_session_set('response')) {
     echo "Please try again";
   }
 
-  if ($response) {
+  if ($response === true) {
     echo "Your data is success to store in Database <br>";
   }
 }
@@ -45,7 +41,7 @@ if (is_session_set('response')) {
       <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />
       <input type="submit" name="submit" value="Submit">
     </form>
-    <form action="" method="GET">
+    <form action="home" method="GET">
       <input type="submit" value="Refresh">
     </form>
   </div>
