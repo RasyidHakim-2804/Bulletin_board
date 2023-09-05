@@ -33,15 +33,16 @@ class Router
   {
     if(is_array($uri)) {
       foreach($uri as $path) {
-        if ((self::$path === $path) && (self::$method === $method)) {
+        if (self::$path === $path && self::$method === $method) {
 
           self::$controller = $controller;
-          self::$found      = true;    
+          self::$found      = true;
+    
         }
       }  
     }
 
-    if ((self::$path === $uri) && (self::$method === $method)) {
+    if (self::$path === $uri && self::$method === $method) {
 
       self::$controller = $controller;
       self::$found      = true;
