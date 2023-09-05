@@ -16,7 +16,7 @@ function view(string $viewName, $data = []) {
 }
 
 
-//function untuk mendirect ke router beserta mengirim response GET
+//function untuk mendirect ke router
 function redirect(string $to) {
   
   $to = $_ENV['DOMAIN'] . $to;
@@ -24,6 +24,12 @@ function redirect(string $to) {
   header("Location: {$to}");
   exit();
 }
+
+//function untuk mengambil variabel dari POST
+function get_post_variable(string $name) {
+  return $_POST[$name]?? null;
+}
+
 /**
  * function-function untuk session
  */
@@ -31,14 +37,14 @@ function redirect(string $to) {
 /**
  * mengirim pesan lewat $_SESSIONS
  */
-function setSession(string $key, $value) {
+function set_session(string $key, $value) {
   
   if(!session_id()) session_start();
 
   $_SESSION[$key] = $value;
 }
 
-function setFlashMessgae(string $key, $value){
+function set_flash_message(string $key, $value){
   if(!session_id()) session_start();
 
   $_SESSION[$key] = ['flasher' => $value];
@@ -47,7 +53,7 @@ function setFlashMessgae(string $key, $value){
 /**
  * function untuk memriksa apakah session memiliki key $name 
  */
-function isSessionSet(string $key) {
+function is_session_set(string $key) {
 
   if(!session_id()) session_start();
 
@@ -57,13 +63,19 @@ function isSessionSet(string $key) {
 /**
  * function untuk mendapatkan variabel session[$name]
  */
-function sessionGet(string $key) {
+function get_session(string $key) {
   if(!session_id()) session_start();
 
   $result = $_SESSION[$key];
 
   if(isset($_SESSION[$key]['flasher'])) {
     $result = $_SESSION[$key]['flasher'];
+
+    unset($_SESSION[$key]);
+  }
+
+  if($key === 'error') {
+    $result = $_SESSION[$key];
 
     unset($_SESSION[$key]);
   }
@@ -78,7 +90,7 @@ function sessionGet(string $key) {
 
 
 //function untuk parsed uri
-function myParsedUri(string $uri) {
+function my_parsed_uri(string $uri) {
 
   $clearedUri = preg_replace('/\/++/', '/', $uri);
   $clearedUri = str_replace($_ENV['DOMAIN'],'',$clearedUri);

@@ -4,7 +4,7 @@ namespace Database;
 use PDO;
 use PDOException;
 
-use function App\Helpers\setSession;
+use function App\Helpers\set_session;
 
 abstract class QuerySQL
 {
@@ -65,7 +65,7 @@ abstract class QuerySQL
     try {
       $this->stmt->execute();
     } catch (PDOException $e) {
-      setSession('error', $e->getMessage());
+      set_session('error', $e->getMessage());
       $result = FALSE;
     }
 

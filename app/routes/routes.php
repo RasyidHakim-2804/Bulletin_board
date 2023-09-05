@@ -23,8 +23,6 @@ Router::route('GET', ['/', '/home', '/index.php'], [MessageController::class, 'g
 
 Router::route('POST', '/message', [MessageController::class, 'store']);
 
-Router::errorRoute( 404, [ErrorController::class, 'notFound']);
-
 
 /**
  * ini route untuk testing

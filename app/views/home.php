@@ -1,26 +1,20 @@
 <?php
-use function App\Helpers\sessionGet;
-use function App\Helpers\isSessionSet;
+use function App\Helpers\is_session_set;
+use function App\Helpers\get_session;
 
-if (isSessionSet('response')) {
+if (is_session_set('response')) {
 
-  $status  = sessionGet('response');
+  $status  = get_session('response');
   
   if ($status['valid'] === FALSE) {
-
     echo "Your data is: {$status['statusLength']} <br>";
     echo "Length of your data: {$status['length']} <br>";
     echo "Please try again";
-
   }
 
-  if ($status['valid'] === TRUE) {
-
-    if($status['statusQuery']) echo "Your data is success to store in Database <br>";
-    //var_dump($status['statusQuery']);
-    if(!$status['statusQuery']) echo sessionGet('error');
+  if ($status['valid'] === TRUE && $status['statusQuery']) {
+    echo "Your data is success to store in Database <br>";
   }
-
 }
 
 ?>

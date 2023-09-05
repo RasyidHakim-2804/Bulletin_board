@@ -5,8 +5,9 @@ namespace App\Controllers;
 use App\Models\Message;
 use App\Helpers\Validation;
 
+use function App\Helpers\get_post_variable;
 use function App\Helpers\redirect;
-use function App\Helpers\setFlashMessgae;
+use function App\Helpers\set_flash_message;
 use function App\Helpers\view;
 
 class MessageController
@@ -16,7 +17,6 @@ class MessageController
   //menampilkan data
   public static function get()
   {
-    
     $row    = (new Message)->getAll('DESC');
 
     //membersihkan data untuk menghilangkan html
@@ -27,18 +27,15 @@ class MessageController
         'time' => strtotime($value['time']),
         'body' => htmlspecialchars($value['body']),
       ];
-
     });
 
-    return view('home', ['row' => $row]);
-    
+    return view('home', ['row' => $row]); 
   }
   
   //menambah pesan
   public static function store()
   {
-
-    $message      = $_POST['message_data']?? '';
+    $message      = get_post_variable('message_data')?? '';
     $response     = [];
     $fixMessage   = self::clearString($message);
     $statusLength = self::validateLength($fixMessage,10,200);
@@ -49,8 +46,7 @@ class MessageController
         'valid'        => false,
         'statusLength' => $statusLength,
         'length'       => strlen($fixMessage),
-      ];
-      
+      ];      
     }
 
     if($statusLength === 'pass') {
@@ -63,11 +59,8 @@ class MessageController
       ];
     }
 
-    setFlashMessgae('response', $response);
-    return redirect('/home');
-      
+    set_flash_message('response', $response);
+    return redirect('/home');   
   }
-
-
 }
 

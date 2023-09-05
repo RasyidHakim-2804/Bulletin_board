@@ -1,43 +1,30 @@
 <?php
 namespace Core;
 
-use function App\Helpers\myParsedUri;
+use App\Controllers\ErrorController;
+
+use function App\Helpers\is_session_set;
+use function App\Helpers\my_parsed_uri;
+use function App\Helpers\view;
 
 class Router
 {
-
-  private static $error = array();
   private static $found = false;
   
   private static $method;
   private static $path;
   private static $controller;
-  private static $responseCode;
   
 
   //mendefinisikan route
   public static function init()
   {      
-    $uri          = myParsedUri($_SERVER['REQUEST_URI']);
+    $uri          = my_parsed_uri($_SERVER['REQUEST_URI']);
     $path         = $uri['path']?? $uri;
     $method       = $_SERVER['REQUEST_METHOD'];
 
     self::$path   = $path;
     self::$method = $method;
-  }
-
-
-  //
-  private static function setResponseCode(int $response_code)
-  {
-    self::$responseCode = $response_code;
-    http_response_code(self::$responseCode);
-  }
-
-
-  //route for error
-  public static function errorRoute(int $response_code, callable|array $controller){
-    self::$error[$response_code] = $controller;
   }
 
 
@@ -59,27 +46,25 @@ class Router
 
       self::$controller = $controller;
       self::$found      = true;
-
     }
   }
 
   //run route
   public static function run()
   {
+    if(is_session_set('error')) {
+      return view('error');
+    }
+
     if(self::$found === true){
-      self::setResponseCode(200);
+      http_response_code(200);
       $controller = self::$controller;
       
-      call_user_func($controller);
-
+      return call_user_func($controller);
     }
 
     if(self::$found === false) {
-      self::setResponseCode(404);
-      
-      $errorController = self::$error[404];
-      //echo $errorController;
-      call_user_func($errorController);
+      return call_user_func([ErrorController::class, 'notfound']);
     }
   }
 }
