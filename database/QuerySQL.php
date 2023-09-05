@@ -29,17 +29,10 @@ abstract class QuerySQL
   //menyiapkan nilai2 query 
   public function setPrepare(array $data)
   {
-    $keys   = '';
-    $param  = '';
     $data   = array_keys($data);
 
-    foreach ($data as $column) {
-      $keys   .= "{$column},";
-      $param  .= ":{$column},"; 
-    }
-
-    $keys  = rtrim($keys, ',');
-    $param = rtrim($param, ',');
+    $param = ':' . implode(', :', $data);
+    $keys  = implode(', ', $data);
 
     $this->keys  = $keys;
     $this->param = $param;
