@@ -27,12 +27,12 @@ abstract class QuerySQL
 
 
   //menyiapkan nilai2 query 
-  public function setPrepare(array $data)
+  public function setPrepare(array $field)
   {
-    $data   = array_keys($data);
+    $column   = array_keys($field);
 
-    $param = ':' . implode(', :', $data);
-    $keys  = implode(', ', $data);
+    $param = ':' . implode(', :', $column);
+    $keys  = implode(', ', $column);
 
     $this->keys  = $keys;
     $this->param = $param;
@@ -79,15 +79,15 @@ abstract class QuerySQL
 
   //CRUD method
 
-  public function create(array $data)
+  public function create(array $field)
   {
-    $this->setPrepare($data);
+    $this->setPrepare($field);
 
     $this->query = "INSERT INTO {$this->table} ({$this->keys}) VALUES ({$this->param})";
 
     $this->stmt = $this->db->prepare($this->query);
 
-    foreach ($data as $key => $value) {
+    foreach ($field as $key => $value) {
       $this->bind($key, $value);
     }
 
