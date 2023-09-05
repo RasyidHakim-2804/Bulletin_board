@@ -3,15 +3,13 @@
 namespace App\Helpers;
 
 
-const DIR_APP = __DIR__ . "\..\..\app";
-
 //function untuk menampilkan page/halaman
 function view(string $viewName, $data = []) {
   try {
     extract($data);
     include_once 'app/views/' . $viewName . '.php';
   } catch (\Exception $e) {
-    echo $e->getMessage();
+    set_session('error', $e->getMessage());
   }
 }
 
@@ -68,12 +66,14 @@ function get_session(string $key) {
 
   $result = $_SESSION[$key];
 
+  //jika tipe pesannya berupa flasher
   if(isset($_SESSION[$key]['flasher'])) {
     $result = $_SESSION[$key]['flasher'];
 
     unset($_SESSION[$key]);
   }
 
+  //jika tipe pesannya error
   if($key === 'error') {
     $result = $_SESSION[$key];
 
@@ -84,18 +84,15 @@ function get_session(string $key) {
 }
 
 
-/**
- * 
- */
-
-
 //function untuk parsed uri
 function my_parsed_uri(string $uri) {
 
   $clearedUri = preg_replace('/\/++/', '/', $uri);
   $clearedUri = str_replace($_ENV['DOMAIN'],'',$clearedUri);
+
+  if($clearedUri !== '/') $clearedUri = rtrim($clearedUri, '/');
+
   $clearedUri = parse_url($clearedUri);
   
   return $clearedUri;
-
 }
