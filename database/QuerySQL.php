@@ -7,10 +7,7 @@ abstract class QuerySQL
 {
   //properti for table
   protected $db;
-  public string $table;
-  public array $column;
   
-
   public function __construct()
   {
     $this->db = DB::initialize();

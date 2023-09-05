@@ -1,7 +1,7 @@
 <?php
 namespace Database;
 
-use \PDO;
+use PDO;
 use PDOException;
 
 class DB
