@@ -43,20 +43,17 @@ class MessageController
     if ($statusLength !== 'pass') {
       
       $response = [ 
-        'valid'        => false,
-        'statusLength' => $statusLength,
-        'length'       => strlen($fixMessage),
+        'no-valid'     => [
+          'statusLength' => $statusLength,
+          'length'       => strlen($fixMessage),
+        ]        
       ];      
     }
 
     if($statusLength === 'pass') {
       
-      $statusQuery = (new Message)->create(['body' => $fixMessage]);
+      $response = (new Message)->create(['body' => $fixMessage]);
 
-      $response = [ 
-          'valid'       => true, 
-          'statusQuery' => $statusQuery,
-      ];
     }
 
     set_flash_message('response', $response);

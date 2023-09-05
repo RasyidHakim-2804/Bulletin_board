@@ -4,15 +4,17 @@ use function App\Helpers\get_session;
 
 if (is_session_set('response')) {
 
-  $status  = get_session('response');
+  $response  = get_session('response');
   
-  if ($status['valid'] === FALSE) {
+  if (isset($response['no-valid'])) {
+    $status = $response['no-valid'];
+
     echo "Your data is: {$status['statusLength']} <br>";
     echo "Length of your data: {$status['length']} <br>";
     echo "Please try again";
   }
 
-  if ($status['valid'] === TRUE && $status['statusQuery']) {
+  if ($response) {
     echo "Your data is success to store in Database <br>";
   }
 }

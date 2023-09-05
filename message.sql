@@ -37,7 +37,7 @@ CREATE TABLE `message` (
 -- Dumping data for table `message`
 --
 
-INSERT INTO `message` ( `message_data`, `time`) VALUES
+INSERT INTO `message` ( `body`, `time`) VALUES
 ( 'character length', '2023-08-01 19:55:24'),
 ( 'huahahahahahhaa', '2023-08-01 20:15:48'),
 ( 'mari coba lagi', '2023-08-01 20:22:50'),
@@ -47,8 +47,6 @@ INSERT INTO `message` ( `message_data`, `time`) VALUES
 ( 'ggndkr jkskjsdakrl', '2023-08-01 20:46:14'),
 ( 'ggndkr jkskjsdakrl', '2023-08-01 20:47:11'),
 ( 'bhbchdc cbecdcv', '2023-08-01 20:52:42'),
-( 'if ($message == &#039;&#039;) {\r\n    return &#039;empty&#039;;\r\n  } elseif ($longchar &lt; 10) {\r\n    return &#039;to short&#039;;\r\n  } elseif ($longchar &gt; 200) {\r\n    return &#039;to long&#039;;\r\n  }\r\n\r\n  r', '2023-08-01 20:54:19'),
-( '&lt;h1&gt;HALO Cuy&lt;/h1&gt;', '2023-08-01 20:55:18'),
 ( 'vvvvvvvvvvvvvvvvvvvv', '2023-08-03 14:29:16'),
 ( 'ddddddddddddd ddddd', '2023-08-04 01:41:04'),
 ( '😀😀😁😁☺😏', '2023-08-04 01:49:11');
