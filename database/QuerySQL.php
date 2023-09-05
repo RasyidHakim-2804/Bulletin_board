@@ -59,6 +59,15 @@ abstract class QuerySQL
 
   }
 
+  private function cleanPrepare()
+  {
+    $this->query  = null;
+    $this->keys   = null;
+    $this->param  = null;
+    $this->values = null;
+    $this->stmt   = null;
+  }
+
   public function execute()
   {
     $result =TRUE;
@@ -68,6 +77,8 @@ abstract class QuerySQL
       set_session('error', $e->getMessage());
       $result = FALSE;
     }
+
+    $this->cleanPrepare();
 
     return $result;
     
