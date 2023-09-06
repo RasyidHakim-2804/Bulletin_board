@@ -7,6 +7,10 @@ abstract class QuerySQL
 {
   //properti for table
   protected $db;
+
+  /**
+   * public string $table; dari child class(models)
+   */
   
   public function __construct()
   {
