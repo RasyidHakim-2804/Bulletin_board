@@ -65,7 +65,7 @@ abstract class QuerySQL
   {
     $query = "SELECT * FROM {$this->table} ORDER BY id {$sort}";
 
-    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    return $this->db->query($query)->fetchAll();
   }
 
 }

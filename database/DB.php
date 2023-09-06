@@ -8,11 +8,17 @@ class DB
 {   
     public static function initialize()
     {
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_CASE => PDO::CASE_NATURAL,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ];
         try {
             return new PDO(
-                dsn: "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}",
+                dsn: "{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}",
                 username:$_ENV['DB_USERNAME'],
-                password:$_ENV['DB_PASSWORD']
+                password:$_ENV['DB_PASSWORD'],
+                options: $options
             );
         } catch (PDOException $e) {
             die('Could not connect to the database:' . $e->getMessage());
