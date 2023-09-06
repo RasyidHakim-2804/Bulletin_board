@@ -33,6 +33,7 @@ class Router
         if ($this->path === $path && $this->method === $method) {
 
           $this->controller = $controller;
+          break;
         }
       }  
     }
