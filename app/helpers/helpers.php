@@ -42,14 +42,14 @@ function my_parsed_uri(string $uri) {
   return $clearedUri;
 }
 
-function my_call_user_func(array $array){
+function my_call_user_func($callable){
 
-  if(!is_callable($array)) {
-    $obj    = new $array[0];
-    $method = $array[1];
+  if(is_array($callable) && !is_callable($callable)) {
+    $obj    = new $callable[0];
+    $method = $callable[1];
 
     return call_user_func([$obj, $method]);
   }
 
-  return call_user_func($array);
+  return call_user_func($callable);
 }
