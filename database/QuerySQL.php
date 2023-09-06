@@ -14,7 +14,7 @@ abstract class QuerySQL
   
   public function __construct()
   {
-    $this->db = DB::initialize();
+    $this->db = (new DB)->initialize();
   }
 
 

@@ -6,7 +6,7 @@ use PDOException;
 
 class DB
 {   
-    public static function initialize()
+    public function initialize()
     {
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
