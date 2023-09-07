@@ -42,7 +42,7 @@ if (isset($response)) {
       <input type="submit" name="submit" value="Submit">
     </form>
     <form action="home" method="GET">
-      <input type="submit" value="Refresh">
+      <button type="submit">Refresh</button>
     </form>
   </div>
   <hr><br><br>
@@ -54,17 +54,23 @@ if (isset($response)) {
         <th>ID</th>
         <th>MESSAGE</th>
         <th>CREATED ON</th>
+        <th>ACTIONS</th>
       </tr>
-      <?php
-      foreach($row as $data){
-        $time = $data['time'];
-        echo '<tr>';
-        echo '<td>' . $data['id']   . '</td>';
-        echo '<td>' . $data['body'] . '</td>';
-        echo '<td><h4>' . date("Y-m-d  h:i:sa", $time) . '</h4></td>';
-        echo '<tr>';
-      }
-      ?>
+      <?php foreach($row as $data): ?>
+        <tr>
+          <td> <?=$data['id']?> </td>
+          <td> <?=$data['body']?> </td>
+          <td><h4> <?=$data['time']?></h4></td>
+          <td>
+            <form action="edit" method="post">
+              <input type="submit" value="Edit">
+            </form>
+            <form action="delete" method="post">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+        <tr>
+      <?php endforeach?>
     </table>
     
   </div>

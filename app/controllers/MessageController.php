@@ -19,10 +19,12 @@ class MessageController
 
     //membersihkan data untuk menghilangkan html
     array_walk($row, function ( &$value) {
+      $time = strtotime($value['time']);
+      $time = date("Y-m-d  h:i:sa", $time);
       
       $value = [
         'id'   => $value['id'],
-        'time' => strtotime($value['time']),
+        'time' => $time,
         'body' => htmlspecialchars($value['body']),
       ];
     });
