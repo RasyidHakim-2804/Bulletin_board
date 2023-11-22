@@ -49,7 +49,7 @@ class MessageController
 
     if($statusLength === 'pass') {
       
-      $response = (new Message)->create(['bodi' => $fixMessage]);
+      $response = (new Message)->create(['body' => $fixMessage]);
 
     }
 
