@@ -3,21 +3,16 @@ namespace App\Controllers;
 
 
 use App\Models\Message;
-use App\Helpers\Validation;
-
-use function App\Helpers\get_post_variable;
-use function App\Helpers\view;
+use App\Helpers\MyString;
+use App\Helpers\HelperFunction as Helper;
 
 class MessageController
 {
-  use Validation;
-  
-  //menampilkan data
-  public function get($response = null)
+  public function index($response = null)
   {
     $row    = (new Message)->getAll('DESC');
 
-    //membersihkan data untuk menghilangkan html
+    //membersihkan data untuk menonaktifkan html tag pada client
     array_walk($row, function ( &$value) {
       $time = strtotime($value['time']);
       $time = date("Y-m-d  h:i:sa", $time);
@@ -29,18 +24,18 @@ class MessageController
       ];
     });
 
-    if(isset($response)) return view('home', ['row' => $row, 'response' => $response]);
+    if(isset($response)) return Helper::view('home', ['row' => $row, 'response' => $response]);
 
-    return view('home', ['row' => $row]); 
+    return Helper::view('home', ['row' => $row]); 
   }
   
   //menambah pesan
   public function store()
   {
-    $message      = get_post_variable('message_data')?? '';
+    $message      = Helper::getPostVariable('message_data')?? '';
     $response     = [];
-    $fixMessage   = $this->clearString($message);
-    $statusLength = $this->validateLength($fixMessage,10,200);
+    $fixMessage   = MyString::sanitizeSpaces($message);
+    $statusLength = MyString::validateLength($fixMessage,10,200);
 
     if ($statusLength !== 'pass') {
       
@@ -54,11 +49,11 @@ class MessageController
 
     if($statusLength === 'pass') {
       
-      $response = (new Message)->create(['body' => $fixMessage]);
+      $response = (new Message)->create(['bodi' => $fixMessage]);
 
     }
 
-    return $this->get($response);   
+    return $this->index($response);   
   }
 }
 

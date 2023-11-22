@@ -8,7 +8,7 @@ $dotenv      = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 
-require_once 'app/helpers/helpers.php';
+// require_once 'app/helpers/helpers.php';
 require_once 'app/routes/routes.php';
 
 //echo '</pre>';

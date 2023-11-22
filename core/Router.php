@@ -1,63 +1,116 @@
 <?php
+
 namespace Core;
 
 use App\Controllers\ErrorController;
 
-use function App\Helpers\my_parsed_uri;
-use function App\Helpers\my_call_user_func;
+use App\Helpers\HelperFunction as Helper;
 
 class Router
-{  
-  private $method;
-  private $path;
-  private $controller;
-  
+{
+   /**
+    * ex: GEt, POST
+    */
+   private $method;
+   /**
+    * ex : /home, /about, /contact, etc
+    */
+   private $path;
+   /**
+    *  function yang akan dipanggil saat $method dan $path terdaftar di route
+    */
+   private $controller;
 
-  //mendefinisikan route
-  public function init()
-  {      
-    $uri          = my_parsed_uri($_SERVER['REQUEST_URI']);
-    $path         = $uri['path']?? $uri;
-    $method       = $_SERVER['REQUEST_METHOD'];
+   private function parsedUri(string $uri)
+   {
 
-    $this->path   = $path;
-    $this->method = $method;
-  }
+      // membersihkan URI dari (/) yang berlebihan
+      $clearedUri = preg_replace('/\/++/', '/', $uri);
 
+      //membersihkan url dari nama domain
+      $clearedUri = str_replace($_ENV['DOMAIN'], '', $clearedUri);
 
-  //match route and url web
-  public function route(string $method, string|array $uri, callable|array $controller)
-  {
-    if(is_array($uri)) {
-      foreach($uri as $path) {
-        if ($this->path === $path && $this->method === $method) {
+      /**
+       * Memeriksa apakah URI setelah dibersihkan bukan merupakan tanda garis miring tunggal (/). 
+       * Jika itu (/), maka fungsi rtrim digunakan untuk menghapus tanda garis miring di ujung 
+       * kanan URI.
+       */
+      if ($clearedUri !== '/') $clearedUri = rtrim($clearedUri, '/');
 
-          $this->controller = $controller;
-          break;
-        }
-      }  
-    }
+      /**
+       * Menggunakan fungsi parse_url untuk mem-parsing URI yang telah dibersihkan menjadi
+       * komponen-komponen seperti skema, host, path, dan sebagainya.
+       */
+      $clearedUri = parse_url($clearedUri);
 
-    if ($this->path === $uri && $this->method === $method) {
+      return $clearedUri;
+   }
 
-      $this->controller = $controller;
-    }
-  }
+   /**
+    * mendefinisikan route
+    * menangkap url dan method pada browser klien
+    * lalu memasukkan 
+    */
+   public function init(): void
+   {
+      $uri          = $this->parsedUri($_SERVER['REQUEST_URI']);
+      $path         = $uri['path'] ?? $uri;
+      $method       = $_SERVER['REQUEST_METHOD'];
 
-  //run route
-  public function run()
-  {
-    if(isset($this->controller)){
-      $controller = $this->controller;
-      
-      // var_dump($controller);
-      // var_dump(is_callable([new $controller[0], $controller[1]]));
+      $this->path   = $path;
+      $this->method = $method;
+   }
 
-      return my_call_user_func($controller);
-    }
+   /**
+    * fungsi ini akan mencocokan antara url, method yang diaskes client pada browser dengan
+    * url, method yang disediakan
+    * jika ada kesesuaian, 
+    * maka @param $this->controller akan diisi  oleh @param callable|array $controller  
+    */
+   public function route(string $method, string|array $uri, callable|array $controller)
+   {
+      if (!in_array(strtolower($method), ['get', 'post'])) {
+         return Helper::showError(500, 'method ' . $method . ' tidak bisa di route');
+      }
 
-    if(!isset($this->controller)) {
-      return my_call_user_func([ErrorController::class, 'notfound']);
-    }
-  }
+      if (is_array($uri)) {
+         foreach ($uri as $path) {
+            if ($this->path === $path && $this->method === $method) {
+
+               $this->controller = $controller;
+               break;
+            }
+         }
+      } else if ($this->path === $uri && $this->method === $method) {
+
+         $this->controller = $controller;
+      }
+   }
+
+   /**
+    * merupakan fungsi yang paling akhir dipanggil pada 
+    * akan memanggil controller jika ada
+    * akan menampilkan halaman error jika controller null
+    */
+   public function run()
+   {
+      if (isset($this->controller)) {
+         $controller = $this->controller;
+         // var_dump($controller);
+         // var_dump(is_callable([new $controller[0], $controller[1]]));
+
+         if(!is_callable($controller)&&is_array($controller)){
+            $method = $controller[1];
+            $class  = $controller[0];
+            $message = 'method ' . $method . '() tidak ditemukan pada class ' . $class;
+            return Helper::showError(500, $message);
+         }
+
+         return call_user_func($controller);
+      }
+
+      if (!isset($this->controller)) {
+         return Helper::showError();
+      }
+   }
 }
