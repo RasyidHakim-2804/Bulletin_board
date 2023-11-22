@@ -95,18 +95,23 @@ class Router
    public function run()
    {
       if (isset($this->controller)) {
-         $controller = $this->controller;
+         $callback = $this->controller;
          // var_dump($controller);
          // var_dump(is_callable([new $controller[0], $controller[1]]));
 
-         if(!is_callable($controller)&&is_array($controller)){
-            $method = $controller[1];
-            $class  = $controller[0];
+         if(is_array($this->controller)){
+            $method = $this->controller[1];
+            $class  = new $this->controller[0];
+            
+            $callback = [$class, $method];
+         }
+
+         if (!is_callable($callback)) {
             $message = 'method ' . $method . '() tidak ditemukan pada class ' . $class;
             return Helper::showError(500, $message);
          }
 
-         return call_user_func($controller);
+         return call_user_func($callback);
       }
 
       if (!isset($this->controller)) {
