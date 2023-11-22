@@ -31,10 +31,6 @@ $router->route('GET', '/test', function() {
   return Helper::view('test', ['nama' => 'rasyid']);
 });
 
-$router->route('GET', '/coba', function() {
-  return Helper::redirect('/test');
-});
-
 // $router->route('GET', '/helm',[MessageController::class, 'delete']);
 
 

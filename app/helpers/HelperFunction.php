@@ -21,16 +21,6 @@ class HelperFunction
   }
 
 
-  //function untuk mendirect ke router
-  static function redirect(string $to)
-  {
-
-    $to = $_ENV['DOMAIN'] . $to;
-
-    header("Location: {$to}");
-    exit();
-  }
-
   //function untuk mengambil variabel dari POST
   static function getPostVariable(string $name)
   {
