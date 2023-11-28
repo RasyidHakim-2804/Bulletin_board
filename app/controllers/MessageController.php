@@ -6,10 +6,11 @@ namespace App\Controllers;
 use App\Models\Message;
 use App\Helpers\MyString;
 use App\Helpers\HelperFunction as Helper;
+use Core\Flash;
 
 class MessageController
 {
-  public function index($response = null)
+  public function index()
   {
     $row    = (new Message)->getAll('DESC');
 
@@ -25,8 +26,6 @@ class MessageController
       ];
     });
 
-    if (isset($response)) return Helper::view('home', ['row' => $row, 'response' => $response]);
-
     return Helper::view('home', ['row' => $row]);
   }
 
@@ -34,31 +33,29 @@ class MessageController
   public function store()
   {
     $message      = Helper::getPostVariable('message_data') ?? '';
-    $response     = [];
     $fixMessage   = MyString::sanitizeSpaces($message);
     $statusLength = MyString::validateLength($fixMessage, 10, 200);
 
+    $message;
     if ($statusLength !== 'pass') {
-
-      $response = [
-        'no-valid'     => [
-          'statusLength' => $statusLength,
-          'length'       => strlen($fixMessage),
-        ]
-      ];
+      $message = 'sorry your data is to ' . $statusLength . ', the lenght is ' . strlen($fixMessage);
     }
 
     if ($statusLength === 'pass') {
-
-      $response = (new Message)->create(['body' => $fixMessage]);
+      (new Message)->create(['body' => $fixMessage]);
+      $message = 'your data succes store in database';
     }
 
-    return $this->index($response);
+    Flash::set('message', $message);
+
+    return Helper::redirect('/');
   }
 
   public function edit(int $id)
   {
     $data = (new Message)->findFirst($id);
+
+    if ($data === null) Helper::showError();
 
     $time = strtotime($data['time']);
     $time = date("Y-m-d  h:i:sa", $time);
@@ -75,18 +72,37 @@ class MessageController
 
   public function update()
   {
-    $body = Helper::getPostVariable('body');
-    $id   = Helper::getPostVariable('id');
+    $request = Helper::getPostVariable();
 
-    $result = (new Message)->updateFirst($id, ['body'=> $body]);
+    $fixMessage   = MyString::sanitizeSpaces($request['body']);
+    $statusLength = MyString::validateLength($fixMessage, 10, 200);
+    
+    if ($statusLength !== 'pass') {
 
-    Helper::redirect('/');
+      $message = 'sorry your data is to ' . $statusLength . ', the lenght is ' . strlen($fixMessage);
+
+      Flash::set('message', $message);
+      
+      Helper::redirect('/message/edit/' . $request['id']);
+    }
+
+    if ($statusLength === 'pass') {
+      
+      (new Message)->updateFirst($request['id'], ['body' => $request['body']]);
+
+      $message = 'Your data has been successfully updated.';
+      
+      Flash::set('message', $message);
+
+      Helper::redirect('/');
+    }
   }
 
   public function delete($id)
   {
     (new Message)->deleteFirst($id);
 
+    Flash::set('message', 'Your data has been successfully deleted.');
     Helper::redirect('/');
   }
 }

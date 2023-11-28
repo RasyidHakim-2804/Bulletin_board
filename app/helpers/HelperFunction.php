@@ -21,9 +21,13 @@ class HelperFunction
 
 
   //function untuk mengambil variabel dari POST
-  static function getPostVariable(string $name)
+  static function getPostVariable(?string $name = null)
   {
-    return $_POST[$name] ?? null;
+    if (isset($name)) {
+      return $_POST[$name] ?? null;
+    }
+
+    return $_POST;
   }
 
 
@@ -41,7 +45,7 @@ class HelperFunction
     die();
   }
 
-  static function call(callable|array $callback, ?array $args = null )
+  static function call(callable|array $callback, ?array $args = null)
   {
     if (is_array($callback)) {
       $method = $callback[1];
@@ -60,7 +64,7 @@ class HelperFunction
       return self::showError(500, $message);
     }
 
-    if(isset($args)) return call_user_func_array($callback, $args);
+    if (isset($args)) return call_user_func_array($callback, $args);
 
     return call_user_func($callback);
   }

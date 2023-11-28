@@ -55,7 +55,10 @@ abstract class QuerySQL
 
     try {
 
-      return $stmt->execute();
+      if (!$stmt->execute()) {
+        throw new \Exception($stmt->errorInfo()[2]);
+      }
+      return true;
     } catch (\Exception $e) {
 
       Helper::showError(500, $e->getMessage());
@@ -70,54 +73,76 @@ abstract class QuerySQL
    */
   public function updateFirst($id, array $field, string $collumn = 'id')
   {
+    $set = '';
+
+    foreach ($field as $key => $value) {
+      $set .= $key . ' = :' . $key . ', ';
+    }
+    $set = rtrim($set, ', ');
+
+
+    $query = "UPDATE {$this->table} SET $set WHERE $collumn = :id";
+    $stmt  = $this->db->prepare($query);
+
+    $stmt->bindValue(':id', $id, $this->type($id));
+
+    foreach ($field as $key => $value) {
+      $type = $this->type($value);
+      $stmt->bindValue(":{$key}", $value, $type);
+    }
+
     try {
-      $set = '';
-
-      foreach ($field as $key => $value) {
-        $set .= $key . ' = :' . $key . ', ';
+      if (!$stmt->execute()) {
+        throw new \Exception($stmt->errorInfo()[2]);
       }
-      $set = rtrim($set, ', ');
-
-
-      $query = "UPDATE {$this->table} SET $set WHERE $collumn = :id";
-      $stmt  = $this->db->prepare($query);
-
-      $stmt->bindValue(':id', $id, $this->type($id));
-
-      foreach ($field as $key => $value) {
-        $type = $this->type($value);
-        $stmt->bindValue(":{$key}", $value, $type);
-      }
-
-      return $stmt->execute();
+      return true;
     } catch (\Exception $e) {
       Helper::showError(500, $e->getMessage());
     }
   }
 
-
-
+  /**
+   * fetch all data
+   */
   public function getAll(string $sort = "ASC")
   {
+
+    $query = "SELECT * FROM {$this->table} ORDER BY id {$sort}";
+    $stmt  = $this->db->query($query);
+
     try {
 
-      $query = "SELECT * FROM {$this->table} ORDER BY id {$sort}";
-
-      return $this->db->query($query)->fetchAll();
+      if (!$stmt->execute()) {
+        throw new \Exception($stmt->errorInfo()[2]);
+      }
+      return $stmt->fetchAll();
     } catch (\Exception $e) {
       Helper::showError(500, $e->getMessage());
     }
   }
 
+  /**
+   * fetch first data
+   */
   public function findFirst($value, $collumn = 'id')
   {
-    try {
-      $query = "SELECT * FROM {$this->table} WHERE {$collumn} = :value LIMIT 1";
-      $stmt  = $this->db->prepare($query);
-      $stmt->bindParam(':value', $value);
-      $stmt->execute();
+    $query = "SELECT * FROM {$this->table} WHERE {$collumn} = :value LIMIT 1";
+    $stmt  = $this->db->prepare($query);
+    $stmt->bindParam(':value', $value);
 
-      return $stmt->fetchAll()[0];
+    try {
+      if (!$stmt->execute()) {
+        throw new \Exception($stmt->errorInfo()[2]);
+      }
+
+      $result = $stmt->fetchAll();
+
+      if (empty($result)) {
+        return null;
+      }
+
+      return $result[0];
+    
     } catch (\Exception $e) {
       Helper::showError(500, $e->getMessage());
     }
@@ -125,12 +150,15 @@ abstract class QuerySQL
 
   public function deleteFirst($value, $collumn = 'id')
   {
-    try {
-      $query = "DELETE FROM {$this->table} WHERE {$collumn} = :value LIMIT 1";
-      $stmt  = $this->db->prepare($query);
-      $stmt->bindParam(':value', $value);
+    $query = "DELETE FROM {$this->table} WHERE {$collumn} = :value LIMIT 1";
+    $stmt  = $this->db->prepare($query);
+    $stmt->bindParam(':value', $value);
 
-      return $stmt->execute();
+    try {
+      if (!$stmt->execute()) {
+        throw new \Exception($stmt->errorInfo()[2]);
+      }
+      return true;
     } catch (\Exception $e) {
       Helper::showError(500, $e->getMessage());
     }

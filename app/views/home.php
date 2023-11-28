@@ -1,20 +1,10 @@
 <?php
+use Core\Flash;
 
-if (isset($response)) {
-
-    if (isset($response['no-valid'])) {
-        $status = $response['no-valid'];
-
-        echo "Your data is: {$status['statusLength']} <br>";
-        echo "Length of your data: {$status['length']} <br>";
-        echo "Please try again";
-    }
-
-    if ($response === true) {
-        echo "Your data is success to store in Database <br>";
-    }
+if (Flash::has('message')) {
+    echo Flash::get('message');
 }
-
+// var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
