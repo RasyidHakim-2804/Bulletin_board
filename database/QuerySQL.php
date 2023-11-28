@@ -21,22 +21,6 @@ abstract class QuerySQL
   }
 
 
-  /** 
-   * menyiapkan nilai2 query
-   * contoh $field =['body' => 'ini badan', 'tangan' => 'ini tangan', 'kaki' => 'ini kaki']
-   * maka hasil returnnya adalah
-   * $keys   = 'body, tangan, kaki';
-   * $params = ':body, :tangan, :kaki';
-   */
-  private function setPrepare(array $field)
-  {
-    $column   = array_keys($field);
-
-    $params = ':' . implode(', :', $column);
-    $keys   = implode(', ', $column);
-
-    return [$keys, $params];
-  }
 
   private function type($value)
   {
@@ -55,13 +39,50 @@ abstract class QuerySQL
 
   public function create(array $field)
   {
+    $column   = array_keys($field);
+
+    $params = ':' . implode(', :', $column);
+    $keys   = implode(', ', $column);
+
+    $query = "INSERT INTO {$this->table} ({$keys}) VALUES ({$params})";
+
+    $stmt  = $this->db->prepare($query);
+
+    foreach ($field as $key => $value) {
+      $type = $this->type($value);
+      $stmt->bindValue(":{$key}", $value, $type);
+    }
+
     try {
 
-      [$keys, $params] = $this->setPrepare($field);
+      return $stmt->execute();
+    } catch (\Exception $e) {
 
-      $query = "INSERT INTO {$this->table} ({$keys}) VALUES ({$params})";
+      Helper::showError(500, $e->getMessage());
+      // echo $e->getMessage();
+    }
+  }
 
+  /**
+   * @param array $field berisi key= kolom , value= value untuk data
+   * @param $id adalah nilai untuk $collumn WHERE
+   * @param string $collumn adalah nama kolom untuk WHERE
+   */
+  public function updateFirst($id, array $field, string $collumn = 'id')
+  {
+    try {
+      $set = '';
+
+      foreach ($field as $key => $value) {
+        $set .= $key . ' = :' . $key . ', ';
+      }
+      $set = rtrim($set, ', ');
+
+
+      $query = "UPDATE {$this->table} SET $set WHERE $collumn = :id";
       $stmt  = $this->db->prepare($query);
+
+      $stmt->bindValue(':id', $id, $this->type($id));
 
       foreach ($field as $key => $value) {
         $type = $this->type($value);
@@ -71,9 +92,9 @@ abstract class QuerySQL
       return $stmt->execute();
     } catch (\Exception $e) {
       Helper::showError(500, $e->getMessage());
-      // echo $e->getMessage();
     }
   }
+
 
 
   public function getAll(string $sort = "ASC")
@@ -83,6 +104,33 @@ abstract class QuerySQL
       $query = "SELECT * FROM {$this->table} ORDER BY id {$sort}";
 
       return $this->db->query($query)->fetchAll();
+    } catch (\Exception $e) {
+      Helper::showError(500, $e->getMessage());
+    }
+  }
+
+  public function findFirst($value, $collumn = 'id')
+  {
+    try {
+      $query = "SELECT * FROM {$this->table} WHERE {$collumn} = :value LIMIT 1";
+      $stmt  = $this->db->prepare($query);
+      $stmt->bindParam(':value', $value);
+      $stmt->execute();
+
+      return $stmt->fetchAll()[0];
+    } catch (\Exception $e) {
+      Helper::showError(500, $e->getMessage());
+    }
+  }
+
+  public function deleteFirst($value, $collumn = 'id')
+  {
+    try {
+      $query = "DELETE FROM {$this->table} WHERE {$collumn} = :value LIMIT 1";
+      $stmt  = $this->db->prepare($query);
+      $stmt->bindParam(':value', $value);
+
+      return $stmt->execute();
     } catch (\Exception $e) {
       Helper::showError(500, $e->getMessage());
     }

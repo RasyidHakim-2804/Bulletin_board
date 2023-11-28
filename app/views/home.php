@@ -47,7 +47,7 @@ if (isset($response)) {
             <textarea name="message_data" cols="70" rows="3" style="resize:none"></textarea><br />
             <input type="submit" name="submit" value="Submit">
         </form>
-        <form action="home" method="GET">
+        <form action=" ./ " method="GET">
             <button type="submit">Refresh</button>
         </form>
     </div>
@@ -70,12 +70,8 @@ if (isset($response)) {
                         <h4> <?= $data['time'] ?></h4>
                     </td>
                     <td>
-                        <form action="edit" method="post">
-                            <input type="submit" value="Edit">
-                        </form>
-                        <form action="delete" method="post">
-                            <input type="submit" value="Delete">
-                        </form>
+                        <a href="./message/edit/<?= $data['id']?>">Edit</a>
+                        <a href="./message/delete/<?= $data['id']?>">Delete</a>
                     </td>
                 <tr>
                 <?php endforeach ?>

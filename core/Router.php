@@ -2,8 +2,6 @@
 
 namespace Core;
 
-use App\Controllers\ErrorController;
-
 use App\Helpers\HelperFunction as Helper;
 
 class Router
@@ -20,6 +18,11 @@ class Router
     *  function yang akan dipanggil saat $method dan $path terdaftar di route
     */
    private $controller;
+
+   /**
+    * variabel yang akan digunakan pada controller jika menggunakan parameter url
+    */
+   private ?array $argsController = null;
 
    private function parsedUri(string $uri)
    {
@@ -49,16 +52,72 @@ class Router
    /**
     * mendefinisikan route
     * menangkap url dan method pada browser klien
-    * lalu memasukkan 
+    * lalu memasukkan nya menjadi properti objek ini
     */
    public function init(): void
    {
       $uri          = $this->parsedUri($_SERVER['REQUEST_URI']);
+      // var_dump($uri);
       $path         = $uri['path'] ?? $uri;
+      // var_dump($uri);
       $method       = $_SERVER['REQUEST_METHOD'];
 
       $this->path   = $path;
+      // var_dump($path);
       $this->method = $method;
+   }
+
+   private function generateParameterPath(string $uri)
+   {
+      $segments = explode('/', $uri);
+      $path = [];
+      $pattern = "/\{[^\{\}]+\}/";
+
+      foreach($segments as $segment){
+         $path[] = preg_match($pattern, $segment)? true : $segment; 
+      }
+
+      return $path;
+   }
+   
+   /**
+    * fungsi yang akan menjalankan rute parameter jika ada
+    */
+   private function parameterRoute(array $uri, callable|array $controller)
+   {
+      /**
+       * memecah url dari web dengan delimiter (/) 
+       */
+      $paths = explode('/',$this->path);
+
+      if(count($paths) !== count($uri)) return;
+
+      $argsController = [];
+
+      /**
+       * untuk mencocokkan antara url dari web dengan rute yang didaftarkan
+       * ex ['user', true, 'edit', true] === ['user', user_id, 'edit', post_id] 
+       */
+      for ($i=0; $i < count($paths); $i++) { 
+
+         //jika 'user' === 'user' lanjut
+         if($paths[$i] === $uri[$i]) continue;
+
+         /**
+          * memasukkan parameter dari url web ke dalam $argsController
+          * $uri[i] === true artinya merupakan posisi prameter url
+          */
+         if($uri[$i] === true){
+            $argsController[] = $paths[$i];
+            continue;
+         }
+
+         return;
+      }
+
+      $this->argsController = $argsController;
+      $this->controller = $controller;
+
    }
 
    /**
@@ -67,24 +126,36 @@ class Router
     * jika ada kesesuaian, 
     * maka @param $this->controller akan diisi  oleh @param callable|array $controller  
     */
-   public function route(string $method, string|array $uri, callable|array $controller)
+   private function route(string $method, string $uri, callable|array $controller)
    {
-      if (!in_array(strtolower($method), ['get', 'post'])) {
-         return Helper::showError(500, 'method ' . $method . ' tidak bisa di route');
-      }
-
-      if (is_array($uri)) {
-         foreach ($uri as $path) {
-            if ($this->path === $path && $this->method === $method) {
-
-               $this->controller = $controller;
-               break;
-            }
-         }
-      } else if ($this->path === $uri && $this->method === $method) {
+      if ($this->path === $uri && $this->method === $method) {
 
          $this->controller = $controller;
+         return;
       }
+
+      $parameterPath = $this->generateParameterPath($uri);
+
+      if(in_array(true, $parameterPath) && $method === $this->method) {
+         $this->parameterRoute($parameterPath, $controller);
+      } 
+
+   }
+
+   /**
+    * route untuk GET
+    */
+   public function get( string|array $uri, callable|array $controller)
+   {
+      $this->route('GET', $uri, $controller);
+   }
+
+   /**
+    * route untuk POST
+    */
+   public function post( string|array $uri, callable|array $controller)
+   {
+      $this->route('POST', $uri, $controller);
    }
 
    /**
@@ -95,27 +166,10 @@ class Router
    public function run()
    {
       if (isset($this->controller)) {
-         $callback = $this->controller;
-         // var_dump($controller);
-         // var_dump(is_callable([new $controller[0], $controller[1]]));
 
-         if(is_array($this->controller)){
-            $method = $this->controller[1];
-            $class  = new $this->controller[0];
-            
-            $callback = [$class, $method];
-         }
-
-         if (!is_callable($callback)) {
-            $message = 'method ' . $method . '() tidak ditemukan pada class ' . $class;
-            return Helper::showError(500, $message);
-         }
-
-         return call_user_func($callback);
+         return Helper::call($this->controller, $this->argsController);
       }
 
-      if (!isset($this->controller)) {
-         return Helper::showError();
-      }
+      return Helper::showError();
    }
 }

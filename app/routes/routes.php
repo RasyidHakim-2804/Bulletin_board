@@ -19,16 +19,22 @@ $router->init();
  * membuat route
  * controller yang bisa dipanggil dari class hanya static function saja
  */
-$router->route('GET', ['/', '/home', '/index.php'], [MessageController::class, 'index']);
+$router->get('/', [MessageController::class, 'index']);
 
-$router->route('POST', '/message', [MessageController::class, 'store']);
+$router->post('/message', [MessageController::class, 'store']);
+
+$router->get('/message/edit/{id}',[MessageController::class, 'edit']);
+
+$router->post('/message/update', [MessageController::class, 'update']);
+
+$router->get('/message/delete/{id}', [MessageController::class, 'delete']);
 
 
 /**
  * ini route untuk testing
  */
-$router->route('GET', '/test', function() {
-  return Helper::view('test', ['nama' => 'rasyid']);
+$router->get('/test/{nama}', function($nama) {
+  return Helper::view('test', ['nama' => $nama]);
 });
 
 // $router->route('GET', '/helm',[MessageController::class, 'delete']);

@@ -10,3 +10,4 @@ DirectoryIndex index.php
 # RewriteCond %{SCRIPT_FILENAME} !-d
 # RewriteCond %{SCRIPT_FILENAME} !-l
 RewriteRule ^(.*)$ index.php [L]
+
