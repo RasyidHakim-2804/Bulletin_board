@@ -1,8 +1,13 @@
 <?php
 use Core\Flash;
 
+if (Flash::has('error')) {
+    var_dump(Flash::get('error'));
+}
+
+
 if (Flash::has('message')) {
-    echo Flash::get('message');
+    var_dump(Flash::get('message'));
 }
 // var_dump($_SESSION);
 ?>

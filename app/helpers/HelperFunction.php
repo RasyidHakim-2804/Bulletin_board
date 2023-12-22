@@ -27,6 +27,8 @@ class HelperFunction
       return $_POST[$name] ?? null;
     }
 
+    if(count($_POST) === 0) return null;
+
     return $_POST;
   }
 

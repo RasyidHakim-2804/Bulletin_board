@@ -1,32 +1,32 @@
 <?php
+
 namespace Core;
 
-class Flash 
+class Flash
 {
-    public static function set(string $name, string $message)
+    public static function set(string $name, $message)
     {
-        if(!session_id()) session_start();
+        if (!session_id()) session_start();
 
-        $_SESSION[$name]= $message;
+        $_SESSION[$name] = $message;
     }
 
     public static function get(string $name)
     {
-        if(!session_id()) session_start();
+        if (!session_id()) session_start();
 
-        if(!isset($_SESSION[$name])) return false;
-
-        $result = $_SESSION[$name];
-        unset($_SESSION[$name]); 
+        $result = isset($_SESSION[$name]) ? $_SESSION[$name] : [];
+        
+        unset($_SESSION[$name]);
 
         return $result;
     }
 
     public static function has(string $name)
     {
-        if(!session_id())session_start();
+        if (!session_id()) session_start();
 
-        if(!isset($_SESSION[$name])) return false;
+        if (!isset($_SESSION[$name])) return false;
 
         return true;
     }

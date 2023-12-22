@@ -5,7 +5,7 @@ namespace Database;
 use PDO;
 use App\Helpers\HelperFunction as Helper;
 
-abstract class QuerySQL
+class QuerySQL
 {
   //properti for table
   private $db;
@@ -15,9 +15,10 @@ abstract class QuerySQL
    * public string $table; dari child class(models)
    */
 
-  public function __construct()
+  public function __construct(string $table)
   {
-    $this->db = (new DB)->initialize();
+    $this->db    = (new DB)->initialize();
+    $this->table = $table;
   }
 
 
@@ -68,11 +69,14 @@ abstract class QuerySQL
 
   /**
    * @param array $field berisi key= kolom , value= value untuk data
-   * @param $id adalah nilai untuk $collumn WHERE
-   * @param string $collumn adalah nama kolom untuk WHERE
+   * @param array $primary adalah nilai untuk collumn WHERE
    */
-  public function updateFirst($id, array $field, string $collumn = 'id')
+  public function update(array $primaryKey, array $field)
   {
+
+    $primaryKeyCollumn = array_keys($primaryKey)[0];
+    $primaryKeyValue   = array_values($primaryKey)[0];
+
     $set = '';
 
     foreach ($field as $key => $value) {
@@ -81,10 +85,10 @@ abstract class QuerySQL
     $set = rtrim($set, ', ');
 
 
-    $query = "UPDATE {$this->table} SET $set WHERE $collumn = :id";
+    $query = "UPDATE {$this->table} SET $set WHERE {$primaryKeyCollumn} = :id";
     $stmt  = $this->db->prepare($query);
 
-    $stmt->bindValue(':id', $id, $this->type($id));
+    $stmt->bindValue(":id", $primaryKeyValue, $this->type($primaryKeyValue));
 
     foreach ($field as $key => $value) {
       $type = $this->type($value);

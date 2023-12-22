@@ -1,7 +1,7 @@
 <?php
 
 use Core\Router;
-use App\Controllers\MessageController;
+use App\Http\Controllers\MessageController;
 
 use App\Helpers\HelperFunction as Helper;
 
