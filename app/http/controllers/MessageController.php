@@ -43,7 +43,7 @@ class MessageController
 
     } else {
 
-      Flash::set('error', $validator->getErrors());
+      Flash::set('errors', $validator->getErrors());
     }
 
     return Helper::redirect('/');
