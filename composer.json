@@ -1,0 +1,26 @@
+{   "name": "hakim/bulletin_board",
+    "autoload": {
+        "psr-4": {
+            "App\\":"app/",
+            "Database\\":"database/",
+            "Core\\":"core/",
+            "Dotenv\\":"vendor/vlucas/phpdotenv/src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rasyid Hakim",
+            "email": "ragamgit78@gmail.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "8.2.4"
+         }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
+ 
+  
+}
