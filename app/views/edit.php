@@ -1,10 +1,17 @@
 <?php
+
 use Core\Flash;
 
 if (Flash::has('errors')) {
-   foreach (Flash::get('errors') as $error) {
-    echo $error;
-   }
+    foreach (Flash::get('errors') as $error) {
+        echo $error;
+    }
+}
+
+function convertTime($time)
+{
+    $time = strtotime($time);
+    return date("Y-m-d  h:i:sa", $time);
 }
 
 ?>
@@ -34,10 +41,10 @@ if (Flash::has('errors')) {
 <body>
     <div>
         <form action="/Bulletin_board/message/update" method="POST">
-            <input type="hidden" name="id" value="<?=$data['id']?>">
+            <input type="hidden" name="id" value="<?= $message['id'] ?>">
             <h4>Your message must be 10 to 200 characters long</h4>
             <h4>Spaces at the beginning and at the end of a sentence are not counted</h4>
-            <textarea name="body" cols="70" rows="3" style="resize:none"><?= $data['body'] ?></textarea><br />
+            <textarea name="body" cols="70" rows="3" style="resize:none"><?= htmlspecialchars($message['body']) ?></textarea><br />
             <input type="submit" name="submit" value="Submit">
             <button type="reset">Reset</button>
         </form>

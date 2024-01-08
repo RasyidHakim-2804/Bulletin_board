@@ -1,6 +1,6 @@
 <?php
 
-use Core\Router;
+use Core\Routing\Router;
 use App\Http\Controllers\MessageController;
 
 use App\Helpers\HelperFunction as Helper;
@@ -10,10 +10,7 @@ use App\Helpers\HelperFunction as Helper;
 /**
  * inisiasi rute dari url browser
  */
-$router = new Router;
-
-$router->init();
-
+$router = new Router();
 
 /**
  * membuat route

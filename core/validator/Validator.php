@@ -2,12 +2,12 @@
 
 namespace Core\Validator;
 
-use Core\Error\ErrorMessage;
 use Core\Validator\Rule\RulerInterface;
 
-abstract class BaseValidator
+class Validator
 {
     private $request = [];
+    private $rules = [];
     private $validRequest;
     private $errors  = [];
 
@@ -16,14 +16,16 @@ abstract class BaseValidator
         $this->request = $request;
     }
 
-    abstract public function rules(): array;
+    public function rules(array $rules)
+    {
+        $this->rules = $rules;
+    }
 
     public function validate(): bool
     {
         $requestKey = array_keys($this->request);
-        $validRequest    = [];
 
-        foreach ($this->rules() as $field => $rules) {
+        foreach ($this->rules as $field => $rules) {
             /**
              * memeriksa apakah field dari rule tersedia pada request
              */

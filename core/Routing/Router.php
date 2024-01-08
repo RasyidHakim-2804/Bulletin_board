@@ -1,8 +1,10 @@
 <?php
 
-namespace Core;
+namespace Core\Routing;
 
 use App\Helpers\HelperFunction as Helper;
+use Core\Controller;
+use Core\Http\Url;
 
 class Router
 {
@@ -24,47 +26,17 @@ class Router
     */
    private ?array $argsController = null;
 
-   private function parsedUri(string $uri)
-   {
-
-      // membersihkan URI dari (/) yang berlebihan
-      $clearedUri = preg_replace('/\/++/', '/', $uri);
-
-      //membersihkan url dari nama domain
-      $clearedUri = str_replace($_ENV['DOMAIN'], '', $clearedUri);
-
-      /**
-       * Memeriksa apakah URI setelah dibersihkan bukan merupakan tanda garis miring tunggal (/). 
-       * Jika itu (/), maka fungsi rtrim digunakan untuk menghapus tanda garis miring di ujung 
-       * kanan URI.
-       */
-      if ($clearedUri !== '/') $clearedUri = rtrim($clearedUri, '/');
-
-      /**
-       * Menggunakan fungsi parse_url untuk mem-parsing URI yang telah dibersihkan menjadi
-       * komponen-komponen seperti skema, host, path, dan sebagainya.
-       */
-      $clearedUri = parse_url($clearedUri);
-
-      return $clearedUri;
-   }
-
    /**
     * mendefinisikan route
     * menangkap url dan method pada browser klien
     * lalu memasukkan nya menjadi properti objek ini
     */
-   public function init(): void
+   public function __construct()
    {
-      $uri          = $this->parsedUri($_SERVER['REQUEST_URI']);
-      // var_dump($uri);
-      $path         = $uri['path'] ?? $uri;
-      // var_dump($uri);
-      $method       = $_SERVER['REQUEST_METHOD'];
 
-      $this->path   = $path;
-      // var_dump($path);
-      $this->method = $method;
+      $uriObj       = new Url();
+      $this->path   = $uriObj->getPath();
+      $this->method = $_SERVER['REQUEST_METHOD'];
    }
 
    private function generateParameterPath(string $uri)
@@ -73,13 +45,13 @@ class Router
       $path = [];
       $pattern = "/\{[^\{\}]+\}/";
 
-      foreach($segments as $segment){
-         $path[] = preg_match($pattern, $segment)? true : $segment; 
+      foreach ($segments as $segment) {
+         $path[] = preg_match($pattern, $segment) ? true : $segment;
       }
 
       return $path;
    }
-   
+
    /**
     * fungsi yang akan menjalankan rute parameter jika ada
     */
@@ -88,9 +60,9 @@ class Router
       /**
        * memecah url dari web dengan delimiter (/) 
        */
-      $paths = explode('/',$this->path);
+      $paths = explode('/', $this->path);
 
-      if(count($paths) !== count($uri)) return;
+      if (count($paths) !== count($uri)) return;
 
       $argsController = [];
 
@@ -98,16 +70,16 @@ class Router
        * untuk mencocokkan antara url dari web dengan rute yang didaftarkan
        * ex ['user', true, 'edit', true] === ['user', user_id, 'edit', post_id] 
        */
-      for ($i=0; $i < count($paths); $i++) { 
+      for ($i = 0; $i < count($paths); $i++) {
 
          //jika 'user' === 'user' lanjut
-         if($paths[$i] === $uri[$i]) continue;
+         if ($paths[$i] === $uri[$i]) continue;
 
          /**
           * memasukkan parameter dari url web ke dalam $argsController
           * $uri[i] === true artinya merupakan posisi prameter url
           */
-         if($uri[$i] === true){
+         if ($uri[$i] === true) {
             $argsController[] = $paths[$i];
             continue;
          }
@@ -117,7 +89,6 @@ class Router
 
       $this->argsController = $argsController;
       $this->controller = $controller;
-
    }
 
    /**
@@ -136,16 +107,15 @@ class Router
 
       $parameterPath = $this->generateParameterPath($uri);
 
-      if(in_array(true, $parameterPath) && $method === $this->method) {
+      if (in_array(true, $parameterPath) && $method === $this->method) {
          $this->parameterRoute($parameterPath, $controller);
-      } 
-
+      }
    }
 
    /**
     * route untuk GET
     */
-   public function get( string|array $uri, callable|array $controller)
+   public function get(string|array $uri, callable|array $controller)
    {
       $this->route('GET', $uri, $controller);
    }
@@ -153,7 +123,7 @@ class Router
    /**
     * route untuk POST
     */
-   public function post( string|array $uri, callable|array $controller)
+   public function post(string|array $uri, callable|array $controller)
    {
       $this->route('POST', $uri, $controller);
    }
@@ -165,11 +135,16 @@ class Router
     */
    public function run()
    {
-      if (isset($this->controller)) {
+      if(!isset($this->controller)) return Helper::showError(404, 'Page is not found');
 
+      if (is_callable($this->controller)) {
          return Helper::call($this->controller, $this->argsController);
       }
 
-      return Helper::showError();
+      if (is_array($this->controller) && is_subclass_of($this->controller[0], Controller::class)) {
+         return Helper::call($this->controller, $this->argsController);
+      }
+
+      return Helper::showError(500, 'Controller not Found');
    }
 }

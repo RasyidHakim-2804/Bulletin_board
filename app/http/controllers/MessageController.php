@@ -6,32 +6,21 @@ use App\Http\Validator\MessageValidator;
 use App\Models\Message;
 use App\Helpers\HelperFunction as Helper;
 use Core\Flash;
+use Core\Controller;
 
-class MessageController
+class MessageController extends Controller
 {
   public function index()
   {
-    $row    = (new Message)->getAll('DESC');
+    $rows    = (new Message)->getAll('DESC');
 
-    //membersihkan data untuk menonaktifkan html tag pada client
-    array_walk($row, function (&$value) {
-      $time = strtotime($value['time']);
-      $time = date("Y-m-d  h:i:sa", $time);
-
-      $value = [
-        'id'   => $value['id'],
-        'time' => $time,
-        'body' => htmlspecialchars($value['body']),
-      ];
-    });
-
-    return Helper::view('home', ['row' => $row]);
+    return Helper::view('home', ['rows' => $rows]);
   }
 
   //menambah pesan
   public function store()
   {
-    $message      = Helper::getPostVariable('message_data');
+    $message      = $_POST['message_data'];
 
     $validator = new MessageValidator(['body' => $message]);
 
@@ -51,27 +40,18 @@ class MessageController
 
   public function edit(int $id)
   {
-    $data = (new Message)->findFirst($id);
+    $message = (new Message)->findFirst($id);
 
-    if ($data === null) Helper::showError();
-
-    $time = strtotime($data['time']);
-    $time = date("Y-m-d  h:i:sa", $time);
-
-    $data = [
-      'id'   => $data['id'],
-      'time' => $time,
-      'body' => htmlspecialchars($data['body']),
-    ];
+    if ($message === null) return Helper::showError(404, 'Page not found');
 
     // var_dump($value);
-    return Helper::view('edit', ['data' => $data]);
+    return Helper::view('edit', ['message' => $message]);
   }
 
   public function update()
   {
 
-    $request      = Helper::getPostVariable();
+    $request   = $_POST;
 
     $validator = new MessageValidator($request);
 

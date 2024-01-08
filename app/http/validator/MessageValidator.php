@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Validator;
 
-use Core\Validator\BaseValidator;
 
 class MessageValidator extends BaseValidator
 {
@@ -17,7 +16,7 @@ class MessageValidator extends BaseValidator
     {
         return [
             'body' => [
-                new \Core\Validator\Rule\Required(true),
+                new \Core\Validator\Rule\Required(),
                 new \Core\Validator\Rule\Min(10),
                 new \Core\Validator\Rule\Max(200),
             ]

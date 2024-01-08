@@ -3,15 +3,20 @@ use Core\Flash;
 
 if (Flash::has('errors')) {
     foreach (Flash::get('errors') as $error) {
-     echo $error;
+        echo "<div class='error'>". $error ."</div>";
     }
  }
 
 
 if (Flash::has('message')) {
-    echo Flash::get('message');
+    echo "<div class='success'>". Flash::get('message') ."</div>";
 }
 // var_dump($_SESSION);
+
+function convertTime($time){
+    $time = strtotime($time);
+    return date("Y-m-d  h:i:sa", $time);
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,16 +27,27 @@ if (Flash::has('message')) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulletin Board</title>
     <style>
-        th,
-        td {
+        th,td {
             padding: 15px;
         }
 
-        table,
-        th,
-        td {
+        table,th,td {
             border: 1px solid black;
             border-collapse: collapse;
+        }
+
+        .error {
+            display: inline-block;
+            background: red;
+            padding: 5px;
+            color: white;
+        }
+
+        .success {
+            display: inline-block;
+            background: green;
+            padding: 5px;
+            color: white;
         }
     </style>
 </head>
@@ -59,16 +75,16 @@ if (Flash::has('message')) {
                 <th>CREATED ON</th>
                 <th>ACTIONS</th>
             </tr>
-            <?php foreach ($row as $data) : ?>
+            <?php foreach ($rows as $row) : ?>
                 <tr>
-                    <td> <?= $data['id'] ?> </td>
-                    <td> <?= $data['body'] ?> </td>
+                    <td> <?= $row['id'] ?> </td>
+                    <td> <?= htmlspecialchars($row['body']) ?> </td>
                     <td>
-                        <h4> <?= $data['time'] ?></h4>
+                        <h4> <?= convertTime($row['time']) ?></h4>
                     </td>
                     <td>
-                        <a href="./message/edit/<?= $data['id']?>">Edit</a>
-                        <a href="./message/delete/<?= $data['id']?>">Delete</a>
+                        <a href="./message/edit/<?= $row['id']?>">Edit</a>
+                        <a href="./message/delete/<?= $row['id']?>">Delete</a>
                     </td>
                 <tr>
                 <?php endforeach ?>
