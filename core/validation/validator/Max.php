@@ -1,7 +1,7 @@
 <?php
-namespace Core\Validator\Rule;
+namespace Core\Validation\Validator;
 
-class Max implements RulerInterface
+class Max implements ValidatorInterface
 {
     private $max;
 
@@ -19,8 +19,8 @@ class Max implements RulerInterface
         return $value <= $this->max;
     }
 
-    public function getErrorMessage(string $nameVariable)
+    public function getErrorMessage()
     {
-        return "{$nameVariable} is bigger than {$this->max}";
+        return "variable is bigger than {$this->max}";
     }
 }

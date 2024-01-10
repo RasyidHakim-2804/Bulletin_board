@@ -1,7 +1,7 @@
 <?php
-namespace Core\Validator\Rule;
+namespace Core\Validation\Validator;
 
-class Min implements RulerInterface
+class Min implements ValidatorInterface
 {
     private $min;
 
@@ -19,8 +19,8 @@ class Min implements RulerInterface
         return $value >= $this->min;
     }
 
-    public function getErrorMessage( $nameVariable)
+    public function getErrorMessage()
     {
-        return "{$nameVariable} is less than {$this->min}";
+        return "variable is less than {$this->min}";
     }
 }

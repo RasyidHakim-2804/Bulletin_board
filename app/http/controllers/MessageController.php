@@ -21,18 +21,17 @@ class MessageController extends Controller
   public function store()
   {
     $message      = $_POST['message_data'];
-
     $validator = new MessageValidator(['body' => $message]);
+    $result    = $validator->validate();
 
-    if ($validator->validate()) {
+    if (!$result) {
 
-      (new Message)->create($validator->getValidRequest());
-
-      Flash::set('message', 'your data succes store in database');
-
+      Flash::set('errors', $validator->getError());
     } else {
 
-      Flash::set('errors', $validator->getErrors());
+      (new Message)->create($result);
+
+      Flash::set('message', 'your data succes store in database');
     }
 
     return Helper::redirect('/');
@@ -52,25 +51,22 @@ class MessageController extends Controller
   {
 
     $request   = $_POST;
-
     $validator = new MessageValidator($request);
+    $result    = $validator->validate();
 
-    if ($validator->validate()) {
+    if (!$result) {
 
-      (new Message)->update(['id' => $request['id']], $validator->getValidRequest());
+      Flash::set('errors', $validator->getError());
 
-      Flash::set('message', 'Your data has been successfully updated.');
-      
-      Helper::redirect('/');
-
+      return Helper::redirect('/message/edit/' . $request['id']);
     } else {
 
-      Flash::set('errors', $validator->getErrors());
+      (new Message)->update(['id' => $request['id']], $result);
 
-      Helper::redirect('/message/edit/' . $request['id']);
+      Flash::set('message', 'Your data has been successfully updated.');
+
+      return Helper::redirect('/');
     }
-
-
   }
 
   public function delete($id)

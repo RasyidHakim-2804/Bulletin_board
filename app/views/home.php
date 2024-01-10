@@ -3,7 +3,7 @@ use Core\Flash;
 
 if (Flash::has('errors')) {
     foreach (Flash::get('errors') as $error) {
-        echo "<div class='error'>". $error ."</div>";
+        echo "<div class='error'>". $error ."</div><br><br>";
     }
  }
 

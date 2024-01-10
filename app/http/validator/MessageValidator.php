@@ -2,7 +2,7 @@
 namespace App\Http\Validator;
 
 
-class MessageValidator extends BaseValidator
+class MessageValidator extends RequestValidator
 {
     public function __construct($request)
     {
@@ -16,10 +16,13 @@ class MessageValidator extends BaseValidator
     {
         return [
             'body' => [
-                new \Core\Validator\Rule\Required(),
-                new \Core\Validator\Rule\Min(10),
-                new \Core\Validator\Rule\Max(200),
-            ]
+                new \Core\Validation\Validator\Required(),
+                new \Core\Validation\Validator\Min(10),
+                new \Core\Validation\Validator\Max(200),
+            ],
+            // 'foot' => [
+            //     new \Core\Validation\Validator\Required()
+            // ]
         ];
     }
 }
