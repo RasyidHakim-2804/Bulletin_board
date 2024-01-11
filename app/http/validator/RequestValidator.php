@@ -4,19 +4,24 @@ namespace App\Http\Validator;
 
 use Core\Validation\RequestValidator as BaseValidator;
 
-class RequestValidator extends BaseValidator
+abstract class RequestValidator
 {
+    protected $validator;
 
     public function __construct(array $requests)
     {
-        parent::__construct($requests, $this->rules());
+        $this->validator = new BaseValidator($requests, $this->rules());
     }
 
-    /**
-     * function ini harus di overide
-     */
-    protected function rules(): array 
+    abstract protected function rules(): array;
+
+    public function validate()
     {
-        return [];
+        return $this->validator->validate();
+    }
+
+    public function getError()
+    {
+        return $this->validator->getError();
     }
 }
