@@ -4,7 +4,7 @@ use Core\Flash;
 
 if (Flash::has('errors')) {
     foreach (Flash::get('errors') as $error) {
-        echo $error;
+        echo "<div class='error'>". $error ."</div><br><br>";
     }
 }
 
@@ -34,6 +34,13 @@ function convertTime($time)
         td {
             border: 1px solid black;
             border-collapse: collapse;
+        }
+
+        .error {
+            display: inline-block;
+            background: red;
+            padding: 5px;
+            color: white;
         }
     </style>
 </head>

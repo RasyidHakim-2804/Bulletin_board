@@ -5,7 +5,7 @@ if (Flash::has('errors')) {
     foreach (Flash::get('errors') as $error) {
         echo "<div class='error'>". $error ."</div><br><br>";
     }
- }
+}
 
 
 if (Flash::has('message')) {
@@ -49,6 +49,26 @@ function convertTime($time){
             padding: 5px;
             color: white;
         }
+
+        .btn-blue {
+            display: inline-block;
+            background: blue;
+            text-decoration: none;
+            color: white;
+            padding: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .btn-red {
+            display: inline-block;
+            background: red;
+            text-decoration: none;
+            color: white;
+            padding: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
     </style>
 </head>
 
@@ -83,8 +103,8 @@ function convertTime($time){
                         <h4> <?= convertTime($row['time']) ?></h4>
                     </td>
                     <td>
-                        <a href="./message/edit/<?= $row['id']?>">Edit</a>
-                        <a href="./message/delete/<?= $row['id']?>">Delete</a>
+                        <a class="btn-blue" href="./message/edit/<?= $row['id']?>">Edit</a>
+                        <a class="btn-red" href="./message/delete/<?= $row['id']?>">Delete</a>
                     </td>
                 <tr>
                 <?php endforeach ?>
