@@ -27,9 +27,7 @@ class RequestValidator
              * @var ValidatorInterface $rule -
              */
             foreach ($rules as $rule) {
-                /**
-                 * @var Validator $validator -
-                 */
+               
                 $validator->addRule($rule);
 
                 if ($rule instanceof Required) $this->required[] = $name;
