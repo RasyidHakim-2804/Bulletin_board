@@ -54,13 +54,9 @@ class RequestValidator
 
     protected function errorRequired($name)
     {
-        $errorMessage = "no {$name} variable on request";
-
-        if (empty($this->error)) {
-            $this->error[] = $errorMessage;
-        } else {
-            $this->error[] = $errorMessage;
-        }
+        $errorMessage = "no '{$name}' field on request";
+        
+        $this->error[] = $errorMessage;
     }
 
     public function validate()

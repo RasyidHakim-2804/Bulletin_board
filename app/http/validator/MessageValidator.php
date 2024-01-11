@@ -20,7 +20,7 @@ class MessageValidator extends RequestValidator
                 new \Core\Validation\Validator\Min(10),
                 new \Core\Validation\Validator\Max(200),
             ],
-            // 'foot' => [
+            // 'test' => [
             //     new \Core\Validation\Validator\Required()
             // ]
         ];
