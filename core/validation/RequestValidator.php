@@ -23,19 +23,19 @@ class RequestValidator
         foreach ($rulesRequest as $name => $rules) {
             $validator = new Validator();
 
-            $this->validator[$name] = $validator;
-
             /**
              * @var ValidatorInterface $rule -
              */
             foreach ($rules as $rule) {
                 /**
-                 * @var Validator $this->validator[$name] -
+                 * @var Validator $validator -
                  */
-                $this->validator[$name]->addRule($rule);
+                $validator->addRule($rule);
 
                 if ($rule instanceof Required) $this->required[] = $name;
             }
+
+            $this->validator[$name] = $validator;
         }
     }
 
