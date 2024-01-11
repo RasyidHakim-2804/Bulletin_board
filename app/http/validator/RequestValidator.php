@@ -4,7 +4,7 @@ namespace App\Http\Validator;
 
 use Core\Validation\RequestValidator as BaseValidator;
 
-abstract class RequestValidator extends BaseValidator
+class RequestValidator extends BaseValidator
 {
 
     public function __construct(array $requests)
@@ -12,5 +12,11 @@ abstract class RequestValidator extends BaseValidator
         parent::__construct($requests, $this->rules());
     }
 
-    abstract protected function rules(): array;
+    /**
+     * function ini harus di overide
+     */
+    protected function rules(): array 
+    {
+        return [];
+    }
 }
